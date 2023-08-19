@@ -1,5 +1,5 @@
 
-STFT
-====
+nf_stft
+=======
 
 NeuroFreq STFT.

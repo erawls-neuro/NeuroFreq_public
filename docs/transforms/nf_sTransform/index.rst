@@ -1,5 +1,5 @@
 
-S-Transform
-===========
+nf_sTransform
+=============
 
 NeuroFreq S-transform.

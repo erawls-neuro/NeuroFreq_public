@@ -1,5 +1,5 @@
 
-Binomial RID
-============
+nf_ridBinomial
+==============
 
 NeuroFreq Binomial RID.

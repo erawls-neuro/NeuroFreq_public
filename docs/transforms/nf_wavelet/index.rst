@@ -1,5 +1,5 @@
 
-Discretized CWT
-===============
+nf_wavelet
+==========
 
 NeuroFreq DCWT.

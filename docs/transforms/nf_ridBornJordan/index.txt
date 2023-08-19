@@ -1,5 +1,5 @@
 
-Born-Jordan Distribution
-========================
+nf_ridBornJordan
+================
 
 NeuroFreq Born-Jordan Distribution.

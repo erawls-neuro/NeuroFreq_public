@@ -1,5 +1,5 @@
 
-Complex Demodulation
-====================
+nf_demodulation
+===============
 
 NeuroFreq Complex Demodulation.

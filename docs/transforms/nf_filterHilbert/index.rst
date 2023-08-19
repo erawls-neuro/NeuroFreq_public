@@ -1,5 +1,5 @@
 
-Filter-Hilbert
-==============
+nf_filterHilbert
+================
 
 NeuroFreq Filter-Hilbert.
