@@ -10,7 +10,7 @@ The source code of this project is located in its repository on GitHub <https://
 
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    :caption: Contents:
 
    utilities/index
