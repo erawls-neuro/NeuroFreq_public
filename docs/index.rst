@@ -1,4 +1,3 @@
-.. _index
 
 NeuroFreq Documentation
 =======================
