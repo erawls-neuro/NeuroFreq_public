@@ -9,7 +9,7 @@ Linear time-frequency methods offer a direct and efficient approach to time-freq
 Quadratic time-frequency methods can provide high-resolution information in both time and frequency simultaneously, making them particularly suited for complex signals that exhibit rapid and non-stationary changes in frequency content. However, this comes at the cost of increased computational complexity and cross-term interference, which can result in time-frequency representations that are more challenging to interpret.
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
    :caption: Contents:
 
    nf_stft/index
