@@ -15,9 +15,9 @@ The source code of this project is located in its repository on GitHub <https://
    :maxdepth: 2
    :caption: Contents:
 
-utilities/index
-transforms/index
-visualization/index
+   utilities/index
+   transforms/index
+   visualization/index
 
 
 
