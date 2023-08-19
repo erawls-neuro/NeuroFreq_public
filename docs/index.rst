@@ -1,12 +1,15 @@
 .. _index
 
-*******************************
-NeuroFreq Project Documentation
-*******************************
+NeuroFreq Documentation
+=======================
 
-.. meta::
-    :description: Neurofreq documentation
-    :keywords: EEG, MEG, time-frequency
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+utilities/index
+transforms/index
+visualization/index
 
 
 .. _dsg-introduction:
