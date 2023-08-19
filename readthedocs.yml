@@ -1,4 +1,4 @@
-# .readthedocs.yml
+---
 # Read the Docs configuration file
 # See https://docs.readthedocs.io/en/stable/config-file/v2.html for details
 
@@ -9,11 +9,7 @@ version: 2
 sphinx:
   configuration: docs/source/conf.py
   builder: html
-  fail_on_warning: false
-
-# Build documentation with MkDocs
-#mkdocs:
-#  configuration: mkdocs.yml
+  fail_on_warning: true
 
 # Optionally build your docs in additional formats such as PDF
 formats:
