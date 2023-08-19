@@ -1,13 +1,13 @@
 
-NeuroFreq Transforms Documentation
-==================================
+visualization
+=============
 
-Time-frequency (TF) analysis of M/EEG data enables rich understanding of cortical dynamics underlying cognition, health, and disease. 
-
-There are many algorithms for time-frequency decomposition of M/EEG neural data, but they are implemented in an inconsistent manner and most existing toolboxes either 1) contain only one or a few transforms, or 2) are not adapted to analyze multichannel, multitrial M/EEG data. This makes entry into time-frequency daunting for new practitioners and limits the ability of the community to flexibly compare the performance of multiple TF methods on M/EEG data. 
-
-This documentation introduces the NeuroFreq toolbox for MATLAB, which includes multiple TF transformation algorithms that are implemented in a consistent fashion and produce consistent output. The toolbox includes TF decomposition algorithms of both linear and quadratic classes, utilities for resampling, averaging, and baseline correction of TF representations, and tools for visualizing and interacting with single-trial or averaged TF representations over multiple channels.
+Following TF decomposition, it can be helpful to visualize the TF matrices as surfaces or scalp topographic plots. For single-trial data this can help visually identify remaining artifacts in the data that should be deleted, and for all TF transformations this can help clarify scalp distributions and temporal characteristics of power. This can be done by the following utilities:
 
 
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
 
-
+   nf_tfPlot/index
+   nf_viewerApp/index

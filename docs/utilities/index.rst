@@ -1,12 +1,17 @@
 
-NeuroFreq Utilities Documentation
-=================================
+utilities
+=========
 
-Time-frequency (TF) analysis of M/EEG data enables rich understanding of cortical dynamics underlying cognition, health, and disease. 
+The NeuroFreq Toolbox includes several high-level utilities for interacting with data. These include utilities for preparing data, conducting TF transformation, averaging and optionally baseline correcting data, and resampling TF data.
 
-There are many algorithms for time-frequency decomposition of M/EEG neural data, but they are implemented in an inconsistent manner and most existing toolboxes either 1) contain only one or a few transforms, or 2) are not adapted to analyze multichannel, multitrial M/EEG data. This makes entry into time-frequency daunting for new practitioners and limits the ability of the community to flexibly compare the performance of multiple TF methods on M/EEG data. 
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
 
-This documentation introduces the NeuroFreq toolbox for MATLAB, which includes multiple TF transformation algorithms that are implemented in a consistent fashion and produce consistent output. The toolbox includes TF decomposition algorithms of both linear and quadratic classes, utilities for resampling, averaging, and baseline correction of TF representations, and tools for visualizing and interacting with single-trial or averaged TF representations over multiple channels.
+   nf_prepData/index
+   nf_tfTransform/index
+   nf_aveBase/index
+   nf_resample/index
 
 
 

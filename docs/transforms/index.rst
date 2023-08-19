@@ -1,13 +1,36 @@
 
-NeuroFreq Transforms Documentation
-==================================
+transforms
+==========
 
-Time-frequency (TF) analysis of M/EEG data enables rich understanding of cortical dynamics underlying cognition, health, and disease. 
+The primary functionality of NeuroFreq is to perform efficient, high-quality TF decompositions with a wide variety of algorithms. Following optional data preparation, M/EEG time series data can be transformed to a TF representation using any of the included algorithms, including several implementations of linear and quadratic decomposition methods.
 
-There are many algorithms for time-frequency decomposition of M/EEG neural data, but they are implemented in an inconsistent manner and most existing toolboxes either 1) contain only one or a few transforms, or 2) are not adapted to analyze multichannel, multitrial M/EEG data. This makes entry into time-frequency daunting for new practitioners and limits the ability of the community to flexibly compare the performance of multiple TF methods on M/EEG data. 
+Linear TF Transforms
+====================
 
-This documentation introduces the NeuroFreq toolbox for MATLAB, which includes multiple TF transformation algorithms that are implemented in a consistent fashion and produce consistent output. The toolbox includes TF decomposition algorithms of both linear and quadratic classes, utilities for resampling, averaging, and baseline correction of TF representations, and tools for visualizing and interacting with single-trial or averaged TF representations over multiple channels.
+Linear time-frequency methods offer a direct and efficient approach to time-frequency analysis. They provide a clear and computationally efficient representation of the signal's time-frequency content but often exhibit a fixed or rigid trade-off between time and frequency resolution. These methods often provide high frequency resolution at the expense of temporal resolution, or vice versa. Thus they are best suited for situations where such a trade-off is acceptable. NeuroFreq implements several linear TF methods including:
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+   nf_stft/index
+   nf_filterHilbert/index
+   nf_demodulation/index
+   nf_wavelet/index
+   nf_cwt/index
+   nf_sTransform/index
 
 
+Quadratic TF Transforms
+=======================
 
+Quadratic time-frequency methods can provide high-resolution information in both time and frequency simultaneously, making them particularly suited for complex signals that exhibit rapid and non-stationary changes in frequency content. However, this comes at the cost of increased computational complexity and cross-term interference, which can result in time-frequency representations that are more challenging to interpret. NeuroFreq implements several quadratic TF methods in the Cohen's class of Reduced Interference Distributions including:
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+   nf_ridBinomial/index
+   nf_ridBornJordan/index
+   nf_ridRihaczek/index
 
