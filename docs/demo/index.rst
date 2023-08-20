@@ -73,6 +73,7 @@ Now, average each of the TF structures. Do not apply a baseline:
 The individual outputs can be examined using the following as an example (for the STFT):
 
 .. code-block:: matlab
+  
   nf_viewerApp( TFA1 );
 
 Which will produce the following:
