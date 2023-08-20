@@ -1,5 +1,5 @@
 # NeuroFreq
-NeuroFreq, a MATLAB Toolbox for Time-Frequency Analysis of M/EEG Data.
+NeuroFreq, a MATLAB Toolbox for Time-Frequency Analysis of M/EEG Data. Read my documentation at: https://neurofreq-public.readthedocs.io/en/latest/index.html
 
 NeuroFreq is a utility for flexible time-frequency analysis of M/EEG data. The NeuroFreq Toolbox is described in the accompanying paper [I will insert preprint link here once it is preprinted].
 
