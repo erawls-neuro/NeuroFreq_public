@@ -2,7 +2,7 @@
 nf_tfVisualizerApp
 ==================
 
-And an interactive visualization of TF structures, including topographic plots and surface plots (at specified sensors) can be generated with the function
+An interactive visualization of TF structures, including topographic plots and surface plots (at specified sensors) can be generated with the function
 
 .. code-block:: matlab
    TF = nf_tfVisualizer_App( TF );
