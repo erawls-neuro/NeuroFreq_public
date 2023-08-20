@@ -9,5 +9,4 @@ Following TF decomposition, it can be helpful to visualize the TF matrices as su
    :maxdepth: 2
    :caption: Contents:
 
-   nf_tfPlot/index
    nf_viewerApp/index
