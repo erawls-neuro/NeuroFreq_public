@@ -10,6 +10,8 @@ The S-transform combines the advantages of both STFT and wavelet methods, and ca
 
 Where data is a 1/2/3D tensor of dimensions channels X time X trials, Fs is the sampling rate of the data in Hz, and plt is 0 or 1 indicating whether or not the user would like a summary plot to be produced following transformation.
 
+Defaults are: plt = 0. Data and Fs are required.
+
 When S-transform is run on the demo synthetic data using
 
 .. code-block:: matlab
