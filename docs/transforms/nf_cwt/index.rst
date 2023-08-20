@@ -19,6 +19,6 @@ When CWT is run on the demo synthetic data using
 We obtain the following result:
 
 .. image:: fig_cwt_synthetic.png
-  :width: 400
+  :width: 600
 
 Note that the CWT returns log-spaced frequencies, and has good resolution at low frequencies.

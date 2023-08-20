@@ -19,4 +19,4 @@ When filter-Hilbert is run on the demo synthetic data using
 We obtain the following result:
 
 .. image:: fig_filterhilbert_synthetic.png
-  :width: 400
+  :width: 600

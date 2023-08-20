@@ -4,9 +4,12 @@ transforms
 
 The primary functionality of NeuroFreq is to perform efficient, high-quality TF decompositions with a wide variety of algorithms. Following optional data preparation, M/EEG time series data can be transformed to a TF representation using any of the included algorithms, including several implementations of linear and quadratic decomposition methods.
 
-Linear time-frequency methods offer a direct and efficient approach to time-frequency analysis. They provide a clear and computationally efficient representation of the signal's time-frequency content but often exhibit a fixed or rigid trade-off between time and frequency resolution. These methods often provide high frequency resolution at the expense of temporal resolution, or vice versa. Thus they are best suited for situations where such a trade-off is acceptable.
+Different TF transformation algorithms are characterized by their time-frequency tradeoff. STFT has an inflexible TF tradeoff that can favor either time or frequency resolution but not both. With CWT, DCWT, filter-Hilbert, and S-transform, there is good temporal resolution at high frequencies and good frequency resolution at lower frequencies. The Wigner-Ville distribution, a prototypical TF distribution, has excellent joint time-frequency resolution, but suffers from cross-terms that render it unusable for most practical applications. As such it is not included in NeuroFreq. The Reduced Interference Distributions solve this problem by applying kernel functions to the Wigner-Ville distribution, significantly masking cross-terms at the expense of slightly lower TF resolution.
 
-Quadratic time-frequency methods can provide high-resolution information in both time and frequency simultaneously, making them particularly suited for complex signals that exhibit rapid and non-stationary changes in frequency content. However, this comes at the cost of increased computational complexity and cross-term interference, which can result in time-frequency representations that are more challenging to interpret.
+.. image:: Fig_TFresolution.png
+  :width: 600
+
+Each transform in NeuroFreq is demonstrated on a set of synthetic data made publicly available by Arts & van den Broke (2022). We appreciate the authors making these synthetic data available to the community.
 
 .. toctree::
    :maxdepth: 2
@@ -22,3 +25,6 @@ Quadratic time-frequency methods can provide high-resolution information in both
    nf_ridBornJordan/index
    nf_ridRihaczek/index
 
+
+References
+Arts, L.P. and van den Broek, E.L., 2022. The fast continuous wavelet transformation (fCWT) for real-time, high-quality, noise-resistant time–frequency analysis. Nature Computational Science, 2(1), pp.47-58.

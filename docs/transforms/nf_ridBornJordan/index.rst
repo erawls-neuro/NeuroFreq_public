@@ -19,4 +19,4 @@ When the Born-Jordan is run on the demo synthetic data using
 We obtain the following result:
 
 .. image:: fig_bornjordan_synthetic.png
-  :width: 400
+  :width: 600

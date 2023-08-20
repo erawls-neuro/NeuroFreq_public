@@ -19,6 +19,6 @@ When S-transform is run on the demo synthetic data using
 We obtain the following result:
 
 .. image:: fig_stransform_synthetic.png
-  :width: 400
+  :width: 600
 
 Note that the S-transform has excellent resolution at low-frequencies.
