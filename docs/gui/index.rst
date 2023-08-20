@@ -11,5 +11,6 @@ To ease learning the simple syntax utilized by NeuroFreq, an an easy-to-use inte
 At the command line. The GUI looks like the following:
 
 .. image: nf_gui_screenshot.png
+  :width: 800
 
 And provides options to browse and load EEGLAB .set files, prep the data, run TF with configurable settings, baseline correct, and view and save the outputs.
