@@ -59,3 +59,5 @@ html_static_path = ['_static']
 
 # Add the following line to tell Sphinx to use the MATLAB domain:
 primary_domain = 'mat'
+
+pygments_style = 'sphinx'
