@@ -2,7 +2,7 @@
 nf_demodulation
 ===============
 
-Complex Demodulation calculates time-frequency representations by first multiplying the real-valued signal by a complex sine wave of a specific frequency, which demodulates the power at that frequency so that it is concentrated at low frequencies. Then, the signal is low-pass filtered in order to recover power and phase at the frequency of the sine wave. Our implementation of complex demodulation first multiplies the data with a series of sine waves with specified frequencies, followed by applying Butterworth low-pass filters at a user-specified frequency and order. Complex demodulation is calculated using
+Complex Demodulation calculates time-frequency representations by first multiplying the real-valued signal by a complex sine wave of a specific frequency, which demodulates the power at that frequency so that it is concentrated at low frequencies. Then, the signal is low-pass filtered in order to recover power and phase at the frequency of the sine wave. Complex demodulation is calculated using
 
 .. code-block:: matlab
    TF = nf_demodulation( data, Fs, freqs, lowpassF, order, plt );    
