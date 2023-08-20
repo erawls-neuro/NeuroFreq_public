@@ -6,6 +6,6 @@ The Continuous Wavelet Transform (CWT) transforms data to a TF representation us
 
 .. code-block:: matlab
    
-   TF = nf_cwt( data, Fs, plt );
+  TF = nf_cwt( data, Fs, plt );
 
 Where data is a 1/2/3D tensor of dimensions channels X time X trials, Fs is the sampling rate of the data in Hz, and plt is 0 or 1 indicating whether or not the user would like a summary plot to be produced following transformation. Note that for Morlet wavelets, the MATLAB function cwt.m does not allow modifying the number of cycles.
