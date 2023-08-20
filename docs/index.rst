@@ -17,6 +17,7 @@ The source code of this project is located in its repository on GitHub: https://
    transforms/index
    visualization/index
    gui/index
+   demo/index
 
 
 
