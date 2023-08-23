@@ -2,7 +2,7 @@
 nf_demodulation
 ===============
 
-Complex Demodulation calculates time-frequency representations by first multiplying the real-valued signal by a complex sine wave of a specific frequency, which demodulates the power at that frequency so that it is concentrated at low frequencies. Then, the signal is low-pass filtered in order to recover power and phase at the frequency of the sine wave. Complex demodulation is calculated using
+Complex Demodulation calculates time-frequency representations by first multiplying the real-valued signal by a complex sine wave of a specific frequency, which demodulates the power at that frequency so that it is concentrated at low frequencies. Then, the signal is low-pass filtered in order to recover power and phase at the frequency of the sine wave. Complex demodulation is the TF method of choice in BESA software (Hoechstetter et al., 2004). It is calculated using
 
 .. code-block:: matlab
    
@@ -23,4 +23,7 @@ We obtain the following result:
 .. image:: fig_demodulation_synthetic.png
   :width: 600
 
-Note that demodulation is noise-resistant but does not have excellent resolution at low frequencies.
+
+References
+^^^^^^^^^^
+Hoechstetter, K., Bornfleth, H., Weckesser, D., Ille, N., Berg, P., & Scherg, M. (2004). BESA source coherence: a new method to study cortical oscillatory coupling. Brain topography, 16, 233-238.

@@ -2,7 +2,7 @@
 nf_ridBornJordan
 ================
 
-The Born-Jordan Distribution, a member of Cohen's class, applies a rectangular kernel in the ambiguity domain. The BJD is computed using
+The Born-Jordan Distribution, a member of Cohen's (1995) class, applies a rectangular kernel in the ambiguity domain. The BJD was proposed in Cohen (1966). The BJD is computed using
 
 .. code-block:: matlab
   
@@ -22,3 +22,9 @@ We obtain the following result:
 
 .. image:: fig_bornjordan_synthetic.png
   :width: 600
+
+References
+^^^^^^^^^^
+Cohen, L. (1995). Time-frequency analysis (Vol. 778). New Jersey: Prentice hall.
+
+Cohen, L. (1966). Generalized phase-space distribution functions. Journal of Mathematical Physics, 7(5), 781-786.

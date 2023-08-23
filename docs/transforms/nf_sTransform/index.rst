@@ -2,7 +2,7 @@
 nf_sTransform
 =============
 
-The S-transform combines the advantages of both STFT and wavelet methods, and can potentially provide a clearer, more detailed time-frequency representation of M/EEG data compared to either method used alone. The S-transform is calculated using 
+The S-transform or Stockwell transform  combines the advantages of both STFT and wavelet methods, and can potentially provide a clearer, more detailed time-frequency representation of M/EEG data compared to either method used alone. The S-transform is calculated using 
 
 .. code-block:: matlab
    
@@ -24,3 +24,8 @@ We obtain the following result:
   :width: 600
 
 Note that the S-transform has excellent resolution at low-frequencies.
+
+References
+^^^^^^^^^^
+
+Stockwell, R. G., Mansinha, L., & Lowe, R. P. (1996). Localization of the complex spectrum: the S transform. IEEE transactions on signal processing, 44(4), 998-1001.

@@ -27,4 +27,5 @@ Each transform in NeuroFreq is demonstrated on a set of synthetic data made publ
 
 
 References
+^^^^^^^^^^
 Arts, L.P. and van den Broek, E.L., 2022. The fast continuous wavelet transformation (fCWT) for real-time, high-quality, noise-resistant time–frequency analysis. Nature Computational Science, 2(1), pp.47-58.

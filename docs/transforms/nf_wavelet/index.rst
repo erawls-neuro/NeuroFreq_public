@@ -2,7 +2,7 @@
 nf_wavelet
 ==========
 
-The discretized continuous wavelet transform (DCWT) adapts the CWT for use with discrete frequency vectors. The DCWT reduces the computational demands of CWT. DCWT is calculated using
+The discretized continuous wavelet transform (DCWT) adapts the CWT for use with discrete frequency vectors. The DCWT reduces the computational demands of CWT. We use DCWT calculated according to Cohen (2014). DCWT is calculated using
 
 .. code-block:: matlab
    
@@ -22,3 +22,8 @@ We obtain the following result:
 
 .. image:: fig_dcwt_synthetic.png
   :width: 600
+
+References
+^^^^^^^^^^
+
+Cohen, M. X. (2014). Analyzing neural time series data: theory and practice. MIT press.

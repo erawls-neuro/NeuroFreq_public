@@ -2,7 +2,7 @@
 nf_ridBinomial
 ==============
 
-The Binomial Reduced Interference Distribution, a member of Cohen's class, adopts a cross-shaped kernel in the ambiguity domain. The binomial RID is computed using
+The Binomial Reduced Interference Distribution, a member of Cohen's (1995) class, adopts a cross-shaped kernel in the ambiguity domain (Jeong & Williams, 1992). The binomial RID is computed using
 
 .. code-block:: matlab
    
@@ -22,3 +22,9 @@ We obtain the following result:
 
 .. image:: fig_binomial_synthetic.png
   :width: 600
+
+References
+^^^^^^^^^^
+Cohen, L. (1995). Time-frequency analysis (Vol. 778). New Jersey: Prentice hall.
+
+Jeong, J., & Williams, W. J. (1992). Kernel design for reduced interference distributions. IEEE Transactions on Signal Processing, 40(2), 402-412.
