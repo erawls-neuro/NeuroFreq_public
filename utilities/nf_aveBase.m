@@ -1,4 +1,4 @@
-function TF = nf_avebase( TF, method, blTimes, plt )
+function TF = nf_aveBase( TF, method, blTimes, plt )
 % GENERAL
 % -------
 % Averages/baselines TF structures from tfUtility or from tf_fun. 

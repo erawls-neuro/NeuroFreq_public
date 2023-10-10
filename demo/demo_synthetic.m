@@ -15,19 +15,19 @@ foi=.25:.25:150;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %First Class: Linear Methods (clean)
-TF1 = nf_stft(dataClean,Fs,.5,80,0.1,1);                 %brief t-spectrogram
+TF1 = nf_stft(dataClean,Fs,.5,80,0.1);                 %brief t-spectrogram
 TF1.freqs = TF1.freqs(TF1.freqs<=150);
 TF1.power = TF1.power(TF1.freqs<=150,:);
 TF2 = nf_stft(dataClean,Fs,5,95,0.1);                  %long t-spectrogram
 TF2.freqs = TF2.freqs(TF2.freqs<=150);
 TF2.power = TF2.power(TF2.freqs<=150,:);
-TF3 = nf_filterhilbert(dataClean,Fs,foi(2:end-2),.5);  %filter-Hilbert
+TF3 = nf_filterHilbert(dataClean,Fs,foi(2:end-2),.5);  %filter-Hilbert
 TF4 = nf_demodulation(dataClean,Fs,foi);               %complex demodulation
 TF5 = nf_cwt(dataClean,Fs);                            %Continuous Wavelet
 TF5.freqs = TF5.freqs(TF5.freqs<=150);
 TF5.power = TF5.power(TF5.freqs<=150,:);
 TF6 = nf_wavelet(dataClean,Fs,foi);                    %Morlet wavelet
-TF7 = nf_stransform(dataClean,Fs);                     %Stockwell Transform
+TF7 = nf_sTransform(dataClean,Fs);                     %Stockwell Transform
 TF7.freqs = TF7.freqs(TF7.freqs<=150);
 TF7.power = TF7.power(TF7.freqs<=150,:);
 %First Class: Linear Methods (corrupted)
@@ -37,13 +37,13 @@ TF8.power = TF8.power(TF8.freqs<=150,:);
 TF9 = nf_stft(dataNoisy,Fs,5,95,0.1);                  %long t-spectrogram
 TF9.freqs = TF9.freqs(TF9.freqs<=150);
 TF9.power = TF9.power(TF9.freqs<=150,:);
-TF10 = nf_filterhilbert(dataNoisy,Fs,foi(2:end-2),.5); %filter-Hilbert
+TF10 = nf_filterHilbert(dataNoisy,Fs,foi(2:end-2),.5); %filter-Hilbert
 TF11 = nf_demodulation(dataNoisy,Fs,foi);              %complex demodulation
 TF12 = nf_cwt(dataNoisy,Fs);                           %Continuous Wavelet
 TF12.freqs = TF12.freqs(TF12.freqs<=150);
 TF12.power = TF12.power(TF12.freqs<=150,:);
 TF13 = nf_wavelet(dataNoisy,Fs,foi);                   %Morlet wavelet
-TF14 = nf_stransform(dataNoisy,Fs);                    %Stockwell Transform
+TF14 = nf_sTransform(dataNoisy,Fs);                    %Stockwell Transform
 TF14.freqs = TF14.freqs(TF14.freqs<=150);
 TF14.power = TF14.power(TF14.freqs<=150,:);
 
@@ -90,23 +90,23 @@ colormap(flipud(brewermap([],'PuOr')))
 
 
 %Second Class: Quadratic Distributions (clean)
-TF15 = nf_ridbinomial(dataClean,Fs);               %Type-II Binomial RID
+TF15 = nf_ridBinomial(dataClean,Fs);               %Type-II Binomial RID
 TF15.freqs = TF15.freqs(TF15.freqs<=150);
 TF15.power = TF15.power(TF15.freqs<=150,:);
-TF16 = nf_ridbornjordan(dataClean,Fs);             %Type-II Born-Jordan RID
+TF16 = nf_ridBornJordan(dataClean,Fs);             %Type-II Born-Jordan RID
 TF16.freqs = TF16.freqs(TF16.freqs<=150);
 TF16.power = TF16.power(TF16.freqs<=150,:);
-TF17 = nf_ridrihaczek(dataClean,Fs);               %RID-Rihaczek TFD
+TF17 = nf_ridRihaczek(dataClean,Fs);               %RID-Rihaczek TFD
 TF17.freqs = TF17.freqs(TF17.freqs<=150);
 TF17.power = TF17.power(TF17.freqs<=150,:);
 %Second Class: Quadratic Distributions (corrupted)
-TF18 = nf_ridbinomial(dataNoisy,Fs);               %Type-II Binomial RID
+TF18 = nf_ridBinomial(dataNoisy,Fs);               %Type-II Binomial RID
 TF18.freqs = TF18.freqs(TF18.freqs<=150);
 TF18.power = TF18.power(TF18.freqs<=150,:);
-TF19 = nf_ridbornjordan(dataNoisy,Fs);             %Type-II Born-Jordan RID
+TF19 = nf_ridBornJordan(dataNoisy,Fs);             %Type-II Born-Jordan RID
 TF19.freqs = TF19.freqs(TF19.freqs<=150);
 TF19.power = TF19.power(TF19.freqs<=150,:);
-TF20 = nf_ridrihaczek(dataNoisy,Fs);               %RID-Rihaczek TFD
+TF20 = nf_ridRihaczek(dataNoisy,Fs);               %RID-Rihaczek TFD
 TF20.freqs = TF20.freqs(TF20.freqs<=150);
 TF20.power = TF20.power(TF20.freqs<=150,:);
 %calculate an additional wigner-ville transform (not included)

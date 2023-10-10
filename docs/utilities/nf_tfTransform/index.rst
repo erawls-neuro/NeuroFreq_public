@@ -1,11 +1,11 @@
 
-nf_tftransform
+nf_tfTransform
 ==============
 
 One main feature of the NeuroFreq Toolbox is the inclusion of a high-level function for TF computation, which provides access to every TF algorithm using a unified syntax and a single function with the option to specify the method of choice. The function accepts EEGLAB-formatted (.set) data structures as input. It is called as follows:
 
 .. code-block:: matlab
    
-  TF = nf_tftransform( EEG, ‘method’, ‘methodArg’, ‘key1’, ‘arg1’, … );
+  TF = nf_tfTransform( EEG, ‘method’, ‘methodArg’, ‘key1’, ‘arg1’, … );
 
 Where 1) EEG is an EEGLAB-formatted (.set) data structure, and 2) ‘methodArg’ can be any of the transforms detailed in this package. Additional keyword-argument pairs differ by algorithm.

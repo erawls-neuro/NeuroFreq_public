@@ -1,4 +1,4 @@
-function tfRes = nf_ridbornjordan(data,Fs,fRes,kernel,makePos,plt)
+function tfRes = nf_ridBornJordan(data,Fs,fRes,kernel,makePos,plt)
 % GENERAL
 % -------
 % Calculates time-frequency of an input dataset (1/2/3D) using Cohen's
@@ -130,7 +130,7 @@ tfRes.scale = 'linear';
 
 % plot results
 if plt == 1
-    nf_tfplot(tfRes);
+    nf_tfPlot(tfRes);
 end
 
 end

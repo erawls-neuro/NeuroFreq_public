@@ -1,4 +1,4 @@
-function [tfRes,p] = nf_tftransform(EEG,varargin)
+function [tfRes,p] = nf_tfTransform(EEG,varargin)
 % GENERAL
 % -------
 % Quickly and flexibly return time-frequency 
@@ -100,10 +100,10 @@ expectedMethods = {'stft' ... %spectrogram
                    'demodulation'... %complex demodulation
                    'wavelet'... %Custom wavelet transform
                    'cwt'... %continuous wavelet transform
-                   'stransform'... %Stockwell transform
-                   'ridbinomial',... %type-II binomial RID
-                   'ridbornjordan',... %type-II Born-Jordan RID
-                   'ridrihaczek'}; %RID-Rihaczek
+                   'sTransform'... %Stockwell transform
+                   'ridBinomial',... %type-II binomial RID
+                   'ridBornJordan',... %type-II Born-Jordan RID
+                   'ridRihaczek'}; %RID-Rihaczek
                    %any new methods added here!
 
 %DEFAULTS                   
@@ -176,7 +176,7 @@ switch method
                 fRes);
         times = times(1)+tfRes.times; %refigure times
     case 'filterhilbert'
-        tfRes = nf_filterhilbert(data,Fs,...
+        tfRes = nf_filterHilbert(data,Fs,...
                 freqs,...
                 fBandwidth,...
                 order);
@@ -192,20 +192,20 @@ switch method
     case 'cwt'
             tfRes = nf_cwt(data,Fs);
     case 'stransform'
-        tfRes = nf_stransform(data,Fs);            
+        tfRes = nf_sTransform(data,Fs);            
     %quadratic tfds
     case 'ridbinomial'
-        tfRes = nf_ridbinomial(data,Fs,...
+        tfRes = nf_ridBinomial(data,Fs,...
                 fRes,...
                 kernel,...
                 makePos);
     case 'ridbornjordan'
-        tfRes = nf_ridbornjordan(data,Fs,...
+        tfRes = nf_ridBornJordan(data,Fs,...
                 fRes,...
                 kernel,...
                 makePos);
     case 'ridrihaczek'
-        tfRes = nf_ridrihaczek(data,Fs,...
+        tfRes = nf_ridRihaczek(data,Fs,...
                 fRes,...
                 cwkernel,...
                 makePos);
@@ -244,7 +244,7 @@ end
 
 % plot results
 if plt==1
-    nf_tfplot(tfRes);
+    nf_tfPlot(tfRes);
 end
 
 end

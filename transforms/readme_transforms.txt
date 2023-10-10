@@ -13,16 +13,16 @@ These include:
 Several functions use code from GPL software releases, specifically the 
 Discrete Time-Frequency Toolbox released by Jeff O'Neill and the 
 RID-Rihaczek function released by Selin Aviyente. These functions include:
-1) nf_ridbornjordan (O'Neill)
-2) nf_ridbinomial (O'Neill)
+1) nf_bornjordan2 (O'Neill)
+2) nf_binomial2 (O'Neill)
 3) nf_ridrihaczek (Aviyente)
 
 Other functions use custom implementations of TF decomposition methods. 
 These include:
-1) nf_filterhilbert
+1) nf_filterHilbert
 2) nf_demodulation
 3) nf_wavelet
-4) nf_stransform
+4) nf_sTransform
 
 Many functions use matlab built-in functions other than direct TF 
 calculations.
@@ -41,7 +41,7 @@ is later than R2019a, uses 'stft' for calculation. If version is earlier
 than R2019a, uses 'spectrogram' for calculation. Returns power and phase 
 estimates. 
 
-2) nf_filterhilbert: 
+2) nf_filterHilbert: 
 Uses a combination of matlab 'butterworth' and 'envelope' functions to 
 filter data into specified frequency bands and return the Hilbert envelope 
 at those bands. Returns power and phase estimates.
@@ -62,7 +62,7 @@ Uses matlab built-in function 'cwt' to compute the continuous wavelet
 transform. CWT returns log-spaced frequencies up to nyquist. Returns power 
 and phase estimates.
 
-6) nf_stransform:
+6) nf_sTransform:
 Uses the Stockwell transform (S-transform) to compute time-frequency 
 distribution. The S-transform is essentially a mix of Fourier and 
 wavelet-based methods, modifying the resolution of an output to adapt over 
@@ -78,19 +78,19 @@ results, but can also have high interference. Due to the problem of
 interferences in everyday applications the toolbox only supports the 
 so-called reduced interference distributions in this class.
 
-7) nf_ridbinomial:
+7) nf_ridBinomial:
 Cohen’s class binomial reduced interference distribution. 
 Provides high-resolution TF distributions by windowing the wigner
 distribution. Includes inline code from Jeff O’Neill’s dtfd toolbox. 
 Returns power but not phase estimates.
 
-8) nf_ridbornjordan:
+8) nf_ridBornJordan:
 Cohen’s class Born-Jordan reduced interference distribution. 
 Provides high-resolution TF distributions by windowing the wigner
 distribution. Includes inline code from Jeff O’Neill’s dtfd toolbox. 
 Returns power but not phase estimates.
 
-9) nf_ridrihaczek:
+9) nf_ridRihaczek:
 Cohen’s class reduced interference Rihaczek distribution. 
 Provides high-resolution complex TF distributions by windowing the 
 Rihaczek complex energy spectrum. Includes inline code from Selin 

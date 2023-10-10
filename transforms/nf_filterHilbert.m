@@ -1,4 +1,4 @@
-function tfRes = nf_filterhilbert(data,Fs,freqs,fBandWidth,order,plt)
+function tfRes = nf_filterHilbert(data,Fs,freqs,fBandWidth,order,plt)
 % GENERAL
 % -------
 % Calculates time-frequency of an input dataset (1/2/3D) using 
@@ -141,7 +141,7 @@ tfRes.scale = 'linear';
 
 % plot results
 if plt == 1
-    nf_tfplot(tfRes);
+    nf_tfPlot(tfRes);
 end
 
 end
