@@ -1,4 +1,4 @@
-function dOut = nf_prepData( EEG )
+function dOut = nf_prepdata( EEG )
 % GENERAL
 % -------
 %

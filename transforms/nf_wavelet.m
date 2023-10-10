@@ -153,7 +153,7 @@ tfRes.scale = 'linear';
 
 % plot results
 if plt == 1
-    nf_tfPlot(tfRes);
+    nf_tfplot(tfRes);
 end
 
 end

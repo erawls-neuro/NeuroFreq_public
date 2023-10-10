@@ -8,9 +8,9 @@ The NeuroFreq Toolbox includes several high-level utilities for interacting with
    :maxdepth: 2
    :caption: Contents:
 
-   nf_prepData/index
-   nf_tfTransform/index
-   nf_aveBase/index
+   nf_prepdata/index
+   nf_tftransform/index
+   nf_avebase/index
    nf_resample/index
 
 
