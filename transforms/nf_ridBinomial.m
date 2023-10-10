@@ -1,4 +1,4 @@
-function tfRes = nf_ridBinomial(data,Fs,fRes,kernel,makePos,plt)
+function tfRes = nf_ridbinomial(data,Fs,fRes,kernel,makePos,plt)
 % GENERAL
 % -------
 % Calculates time-frequency of an input dataset (1/2/3D) using Cohen's
@@ -131,7 +131,7 @@ tfRes.scale = 'linear';
 
 % plot results
 if plt == 1
-    nf_tfPlot(tfRes);
+    nf_tfplot(tfRes);
 end
 
 end

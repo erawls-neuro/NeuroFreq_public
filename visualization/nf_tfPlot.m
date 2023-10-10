@@ -1,4 +1,4 @@
-function h = nf_tfPlot( TF )
+function h = nf_tfplot( TF )
 %
 % GENERAL
 % -------

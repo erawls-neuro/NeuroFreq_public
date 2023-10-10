@@ -1,4 +1,4 @@
-function tfRes = nf_sTransform(data,Fs,plt)
+function tfRes = nf_stransform(data,Fs,plt)
 % GENERAL
 % -------
 % Calculates time-frequency of an input dataset (1/2/3D) using the
@@ -106,7 +106,7 @@ tfRes.scale = 'linear';
 
 % plot results
 if plt == 1
-    nf_tfPlot(tfRes);
+    nf_tfplot(tfRes);
 end
 
 end

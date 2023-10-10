@@ -27,54 +27,54 @@ Now, mean-center the data, remove quadratic trends, and apply a cosine-square (T
 
 .. code-block:: matlab
 
-  EEG = nf_prepData( EEG );
+  EEG = nf_prepdata( EEG );
 
 Calculate all of the different time-frequency transforms using default methods:
 
 .. code-block:: matlab
 
   %First Class: Linear Decompositions
-  TF1 = nf_tfTransform(EEG,'plt',0,'freqs',foi,'times',toi,...
+  TF1 = nf_tftransform(EEG,'plt',0,'freqs',foi,'times',toi,...
     'method', 'stft');               %matlab spectrogram (STFT)
-  TF2 = nf_tfTransform(EEG,'plt',0,'freqs',foi,'times',toi,...
+  TF2 = nf_tftransform(EEG,'plt',0,'freqs',foi,'times',toi,...
     'method','filterhilbert');      %filter-Hilbert
-  TF3 = nf_tfTransform(EEG,'plt',0,'freqs',foi,'times',toi,...
+  TF3 = nf_tftransform(EEG,'plt',0,'freqs',foi,'times',toi,...
     'method', 'demodulation');        %complex demodulation
-  TF4 = nf_tfTransform(EEG,'plt',0,'freqs',foi,'times',toi,...
+  TF4 = nf_tftransform(EEG,'plt',0,'freqs',foi,'times',toi,...
     'method',  'wavelet');           %Morlet discretized wavelet
-  TF5 = nf_tfTransform(EEG,'plt',0,'freqs',foi,'times',toi,...
-    'method',  'CWT');                  %Continuous Wavelet Transform
-  TF6 = nf_tfTransform(EEG,'plt',0,'freqs',foi,'times',toi,...
+  TF5 = nf_tftransform(EEG,'plt',0,'freqs',foi,'times',toi,...
+    'method',  'cwt');                  %Continuous Wavelet Transform
+  TF6 = nf_tftransform(EEG,'plt',0,'freqs',foi,'times',toi,...
     'method',  'stransform');           %Stockwell Transform
   %Second Class: Quadratic Distributions
-  TF7 = nf_tfTransform(EEG,'plt',0,'freqs',foi,'times',toi,...
-    'method',  'ridBinomial');        %Type-II Binomial RID
-  TF8 = nf_tfTransform(EEG,'plt',0,'freqs',foi,'times',toi,...
-    'method',  'ridBornJordan');      %Type-II Born-Jordan RID
-  TF9 = nf_tfTransform(EEG,'plt',0,'freqs',foi,'times',toi,...
-    'method',  'ridRihaczek');        %RID-Rihaczek TFD
+  TF7 = nf_tftransform(EEG,'plt',0,'freqs',foi,'times',toi,...
+    'method',  'ridbinomial');        %Type-II Binomial RID
+  TF8 = nf_tftransform(EEG,'plt',0,'freqs',foi,'times',toi,...
+    'method',  'ridbornjordan');      %Type-II Born-Jordan RID
+  TF9 = nf_tftransform(EEG,'plt',0,'freqs',foi,'times',toi,...
+    'method',  'ridrihaczek');        %RID-Rihaczek TFD
 
-Note that the nf_tfTransform function can pass default arguments to each TF method.
+Note that the nf_tftransform function can pass default arguments to each TF method.
 
 Now, average each of the TF structures. Do not apply a baseline:
 
 .. code-block:: matlab
 
-  TFA1 = nf_aveBase(TF1,'none');
-  TFA2 = nf_aveBase(TF2,'none');
-  TFA3 = nf_aveBase(TF3,'none');
-  TFA4 = nf_aveBase(TF4,'none');
-  TFA5 = nf_aveBase(TF5,'none');
-  TFA6 = nf_aveBase(TF6,'none');
-  TFA7 = nf_aveBase(TF7,'none');
-  TFA8 = nf_aveBase(TF8,'none');
-  TFA9 = nf_aveBase(TF9,'none');
+  TFA1 = nf_avebase(TF1,'none');
+  TFA2 = nf_avebase(TF2,'none');
+  TFA3 = nf_avebase(TF3,'none');
+  TFA4 = nf_avebase(TF4,'none');
+  TFA5 = nf_avebase(TF5,'none');
+  TFA6 = nf_avebase(TF6,'none');
+  TFA7 = nf_avebase(TF7,'none');
+  TFA8 = nf_avebase(TF8,'none');
+  TFA9 = nf_avebase(TF9,'none');
 
 The individual outputs can be examined using the following as an example (for the STFT):
 
 .. code-block:: matlab
   
-  nf_viewerApp( TFA1 );
+  nf_viewerapp( TFA1 );
 
 Which will produce the following:
 
