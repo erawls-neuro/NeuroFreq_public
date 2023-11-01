@@ -22,7 +22,7 @@ Each transform in NeuroFreq is demonstrated on a set of synthetic data made publ
    nf_cwt/index
    nf_stransform/index
    nf_ridbinomial/index
-   nf_ridbornJordan/index
+   nf_ridbornjordan/index
    nf_ridrihaczek/index
 
 
