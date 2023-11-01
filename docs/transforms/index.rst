@@ -12,7 +12,7 @@ Different TF transformation algorithms are characterized by their time-frequency
 Each transform in NeuroFreq is demonstrated on a set of synthetic data made publicly available by Arts & van den Broke (2022). We appreciate the authors making these synthetic data available to the community.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
 
    nf_stft/index
