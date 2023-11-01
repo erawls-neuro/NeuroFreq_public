@@ -16,14 +16,14 @@ Each transform in NeuroFreq is demonstrated on a set of synthetic data made publ
    :caption: Contents:
 
    nf_stft/index
-   nf_filterHilbert/index
+   nf_filterhilbert/index
    nf_demodulation/index
    nf_wavelet/index
    nf_cwt/index
-   nf_sTransform/index
-   nf_ridBinomial/index
-   nf_ridBornJordan/index
-   nf_ridRihaczek/index
+   nf_stransform/index
+   nf_ridbinomial/index
+   nf_ridbornJordan/index
+   nf_ridrihaczek/index
 
 
 References
