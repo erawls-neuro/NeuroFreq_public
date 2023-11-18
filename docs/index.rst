@@ -8,6 +8,7 @@ This documentation describes the NeuroFreq toolbox for MATLAB, which includes mu
 
 The source code of this project is located in its repository on GitHub: https://github.com/erawls-neuro/NeuroFreq_public.
 
+The NeuroFreq bioRxiv preprint can be found at: https://www.biorxiv.org/content/10.1101/2023.11.01.565154v1.
 
 .. toctree::
    :maxdepth: 2
