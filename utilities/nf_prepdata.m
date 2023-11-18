@@ -46,6 +46,7 @@ if isstruct( EEG )
     nTrls = EEG.trials;
     dEEG = EEG.data;
 else
+    flag = 0;
     disp('input is not a structure - determining dimensions');
     dEEG = EEG;
     nChan = size(dEEG,1);
