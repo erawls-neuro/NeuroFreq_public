@@ -221,9 +221,16 @@ end
 fIndices = find( (tfRes.freqs>=freqs(1)) + (tfRes.freqs<=freqs(end)) == 2);
 tIndices = find( (tfRes.times>=reqT(1)) + (tfRes.times<=reqT(end)) == 2);
 
-tfRes.power=tfRes.power(:,fIndices,tIndices,:);
-if isfield(tfRes,'phase') %some methods do not return phases
-    tfRes.phase=tfRes.phase(:,fIndices,tIndices,:);
+if EEG.nbchan>1
+    tfRes.power=tfRes.power(:,fIndices,tIndices,:);
+    if isfield(tfRes,'phase') %some methods do not return phases
+        tfRes.phase=tfRes.phase(:,fIndices,tIndices,:);
+    end
+else
+    tfRes.power=tfRes.power(fIndices,tIndices,:);
+    if isfield(tfRes,'phase') %some methods do not return phases
+        tfRes.phase=tfRes.phase(fIndices,tIndices,:);
+    end
 end
 tfRes.freqs = tfRes.freqs(fIndices);
 tfRes.times = tfRes.times(tIndices);

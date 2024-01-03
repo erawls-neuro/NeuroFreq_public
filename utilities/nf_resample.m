@@ -52,14 +52,24 @@ if ~isempty(tVec)
     disp(['resampling data to ' num2str(1/mean(diff(tVec))) ' Hz sampling rate in time.']);
     %power first
     tfP=TF.power; %get power
-    tfP=interp1(TF.times,permute(tfP,[3,1,2,4]),tVec); %times,chans,freqs,trls
-    tfP = permute(tfP,[2,3,1,4]);
+    if TF.nsensor>1
+        tfP=interp1(TF.times,permute(tfP,[3,1,2,4]),tVec); %times,chans,freqs,trls
+        tfP = permute(tfP,[2,3,1,4]);
+    else
+        tfP=interp1(TF.times,permute(tfP,[2,1,3]),tVec); %times,freqs,trls
+        tfP = permute(tfP,[2,1,3]);
+    end
     TF.power=tfP;
     %now phase if it exists
     if isfield(TF,'phase')
         tfR=TF.phase; %get phase
-        tfR=wrapToPi(interp1(TF.times,unwrap(permute(tfR,[3,1,2,4])),tVec));
-        tfR = permute(tfR,[2,3,1,4]);
+        if TF.nsensor>1
+            tfR=wrapToPi(interp1(TF.times,unwrap(permute(tfR,[3,1,2,4])),tVec)); %times,chans,freqs,trials
+            tfR = permute(tfR,[2,3,1,4]); %chans,freqs,times,trials
+        else
+            tfR=wrapToPi(interp1(TF.times,unwrap(permute(tfR,[2,1,3])),tVec)); %times,freqs,trials
+            tfR = permute(tfR,[2,1,3]); %freqs,times,trials
+        end
         TF.phase=tfR;
     end
     TF.times=tVec;
@@ -70,14 +80,23 @@ if ~isempty(fVec)
     disp('resampling data in frequency.');
     %power first
     tfP=TF.power; %get power
-    tfP=interp1(TF.freqs,permute(tfP,[2,1,3,4]),fVec); %freqs,chans,times,trls
-    tfP = permute(tfP,[2,1,3,4]);
+    if TF.nsensor>1
+        tfP=interp1(TF.freqs,permute(tfP,[2,1,3,4]),fVec); %freqs,chans,times,trls
+        tfP = permute(tfP,[2,1,3,4]); %chans,freqs,times,trials
+    else
+        tfP=interp1(TF.freqs,tfP,fVec); %freqs,times,trls
+    end 
     TF.power=tfP;
+        
     %now phase if it exists
     if isfield(TF,'phase')
         tfR=TF.phase; %get phase
-        tfR=wrapToPi(interp1(TF.freqs,unwrap(permute(tfR,[2,1,3,4])),fVec));
-        tfR = permute(tfR,[2,1,3,4]);
+        if TF.nsensor>1
+            tfR=wrapToPi(interp1(TF.freqs,unwrap(permute(tfR,[2,1,3,4])),fVec));
+            tfR = permute(tfR,[2,1,3,4]);
+        else
+            tfR=wrapToPi(interp1(TF.freqs,unwrap(tfR),fVec));           
+        end
         TF.phase=tfR;
     end
     TF.freqs=fVec;

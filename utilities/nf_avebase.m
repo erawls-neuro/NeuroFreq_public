@@ -65,39 +65,65 @@ end
 if TF.ntrls==1
     error('TF is already averaged (ntrls = 1)');
 end
+if TF.nsensor==1
+    flagsens=1;
+else
+    flagsens=0;
+end
 
 %get trial info
 conds = unique(trlvec,'stable');
 
 %preallocate power/phase
-newpower = zeros(size(TF.power,1),size(TF.power,2),size(TF.power,3),numel(conds));
+sz = size(TF.power);
+sz=sz(1:end-1);
+newpower = zeros([sz,numel(conds)]);
 %if we have phase
 if isfield(TF,'phase')
-    newphase = zeros(size(TF.phase,1),size(TF.phase,2),size(TF.phase,3),numel(conds));
+    newphase = zeros([sz,numel(conds)]);
 end
 %if tf is parameterized
 if isfield(TF,'SPRiNT') %parameterized
-    newosc = zeros(size(TF.power,1),size(TF.power,2),size(TF.power,3),numel(conds));
-    newap = zeros(size(TF.power,1),size(TF.power,2),size(TF.power,3),numel(conds));
+    newosc = zeros([sz,numel(conds)]);
+    newap = zeros([sz,numel(conds)]);
 end
 
 %loop thru conditions
 for n=1:numel(conds)
-    %get only condition-specific power
-    condP = TF.power(:,:,:,find(trlvec==conds(n)));
-    %average power over trials
-    newpower(:,:,:,n) = corrP(condP,blTimes,method);
-    %get parameterized
-    if isfield(TF,'SPRiNT') %parameterized
-        condap = TF.SPRiNT.ap_power(:,:,:,find(trlvec==conds(n)));
-        condosc = TF.SPRiNT.osc_power(:,:,:,find(trlvec==conds(n)));
-        newap(:,:,:,n) = corrP(condap,blTimes,method);
-        newosc(:,:,:,n) = corrP(condosc,blTimes,method);
-    end
-    %get ITC
-    if isfield(TF,'phase')
-        condphase = TF.phase(:,:,:,find(trlvec==conds(n)));
-        newphase(:,:,:,n) = squeeze(abs(mean(exp(1i*condphase),4)));
+    if flagsens==0
+        %get only condition-specific power
+        condP = TF.power(:,:,:,find(trlvec==conds(n)));
+        %average power over trials
+        newpower(:,:,:,n) = corrP(condP,blTimes,method,flagsens);
+        %get parameterized
+        if isfield(TF,'SPRiNT') %parameterized
+            condap = TF.SPRiNT.ap_power(:,:,:,find(trlvec==conds(n)));
+            condosc = TF.SPRiNT.osc_power(:,:,:,find(trlvec==conds(n)));
+            newap(:,:,:,n) = corrP(condap,blTimes,method,flagsens);
+            newosc(:,:,:,n) = corrP(condosc,blTimes,method,flagsens);
+        end
+        %get ITC
+        if isfield(TF,'phase')
+            condphase = TF.phase(:,:,:,find(trlvec==conds(n)));
+            newphase(:,:,:,n) = squeeze(abs(mean(exp(1i*condphase),4)));
+        end
+    else
+        %get only condition-specific power
+        condP = TF.power(:,:,find(trlvec==conds(n)));
+        %average power over trials
+        newpower(:,:,n) = corrP(condP,blTimes,method,flagsens);
+        %get parameterized
+        if isfield(TF,'SPRiNT') %parameterized
+            condap = TF.SPRiNT.ap_power(:,:,find(trlvec==conds(n)));
+            condosc = TF.SPRiNT.osc_power(:,:,find(trlvec==conds(n)));
+            newap(:,:,n) = corrP(condap,blTimes,method,flagsens);
+            newosc(:,:,n) = corrP(condosc,blTimes,method,flagsens);
+        end
+        %get ITC
+        if isfield(TF,'phase')
+            condphase = TF.phase(:,:,find(trlvec==conds(n)));
+            newphase(:,:,n) = squeeze(abs(mean(exp(1i*condphase),3)));
+        end
     end
     %set trials/erp
     TF.trlerp(n)=numel(find(trlvec==conds(n)));
@@ -124,10 +150,15 @@ end
 
 
 
-function power = corrP(power,blTimes,method) %average power over trials
-tfPow = squeeze(mean( power,4 ));
-blPow = repmat(squeeze(mean( tfPow(:,:,blTimes), 3)), [1,1,size(power,3)]);
-blPowSTD = repmat(squeeze(std(permute(tfPow,[3,1,2]))), [1,1,size(power,3)]);
+function power = corrP(power,blTimes,method,flagsens) %average power over trials
+tfPow = squeeze(mean( power,ndims(power) ));
+if flagsens==0
+    blPow = repmat(squeeze(mean( tfPow(:,:,blTimes), 3)), [1,1,size(power,3)]);
+    blPowSTD = repmat(squeeze(std(permute(tfPow,[3,1,2]))), [1,1,size(power,3)]);
+else
+    blPow = repmat(squeeze(mean( tfPow(:,blTimes), 2)), [1,size(power,2)]);
+    blPowSTD = repmat(squeeze(std(permute(tfPow,[2,1]))), [1,size(power,2)]);
+end
 %correct power
 switch method
     case 'zscore'
@@ -145,7 +176,4 @@ end
 power = tfPow;
 
 end
-
-
-
 
