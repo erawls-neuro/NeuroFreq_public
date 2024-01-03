@@ -1,7 +1,7 @@
 function TF = nf_avebase( TF, method, blTimes, trlvec, plt )
 % GENERAL
 % -------
-% Averages/baselines TF structures from tfUtility or from tf_fun. 
+% Averages/baselines TF structures from tftransform or from tf_fun. 
 % Power is averaged and baseline corrected according to either dB, %, or
 % z-score. If the signal contains phase, phase is processed into ITC.
 %
@@ -44,7 +44,7 @@ if nargin<5 || isempty(plt)
 end
 if nargin<4 || isempty(trlvec)
     disp('No trial vector supplied - averaging all trials together');
-    trlvec = ones(1, size(TF.power,4));
+    trlvec = ones(1, size(TF.power,ndims(TF.power)));
 end
 if nargin<3 || isempty(blTimes)
     disp('no times provided, using all times before 0');
@@ -61,8 +61,13 @@ if nargin<1 || isempty(TF)
     error('at least a TF structure is required input');
 end
 
+%check if already averaged
+if TF.ntrls==1
+    error('TF is already averaged (ntrls = 1)');
+end
+
 %get trial info
-conds = unique(trlvec);
+conds = unique(trlvec,'stable');
 
 %preallocate power/phase
 newpower = zeros(size(TF.power,1),size(TF.power,2),size(TF.power,3),numel(conds));
@@ -111,7 +116,7 @@ end
 
 %plot results
 if plt==1
-        nf_tfplot(TF);
+    nf_tfplot(TF);
 end
 
 end
