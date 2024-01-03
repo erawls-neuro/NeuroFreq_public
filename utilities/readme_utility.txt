@@ -34,6 +34,10 @@ Trials are averaged together per sensor, and an optional dB/z-score/percent
 baseline correction is applied. Phase data are averaged as the inter-trial
 phase coherence (ITPC) measuring phase consistency over trials.
 
+5) nf_tfplot:
+Plots a summary of TF structures averaged over trials and channels if
+applicable.
+
 
 
 

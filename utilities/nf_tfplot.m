@@ -58,13 +58,12 @@ if ~isfield(TF,'SPRiNT') %not parameterized
         end
     end
     
-%     else
-%         powDat = squeeze(mean(TF.power));
-%         if isfield(TF,'phase')
-%             phasDat = squeeze(mean(TF.phase));
-%         end
-%     end
-    
+    %continue to average over outer dimensions!
+    if ~ismatrix(powDat)
+        powDat = squeeze(mean(powDat,ndims(powDat)));
+        phasDat = squeeze(mean(phasDat,ndims(phasDat)));
+    end
+
     %get marginals
     powTMarg = mean(powDat);
     powFMarg = mean(powDat,2);

@@ -16,8 +16,7 @@ The NeuroFreq bioRxiv preprint can be found at: https://www.biorxiv.org/content/
 
    utilities/index
    transforms/index
-   visualization/index
-   gui/index
+   apps/index
    demo/index
 
 

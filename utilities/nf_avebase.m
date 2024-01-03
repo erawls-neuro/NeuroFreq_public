@@ -1,4 +1,4 @@
-function TF = nf_avebase( TF, method, blTimes, plt )
+function TF = nf_avebase( TF, method, blTimes, trlvec, plt )
 % GENERAL
 % -------
 % Averages/baselines TF structures from tfUtility or from tf_fun. 
@@ -11,9 +11,12 @@ function TF = nf_avebase( TF, method, blTimes, plt )
 %
 % INPUT
 % -----
-% TF - structure output by tfUtility.m and tf_fun functions
-% method - 'none', 'zscore', 'db', 'percent'
-% blTimes - [min max] times for baseline, in ms
+% 1) TF - structure output by tfUtility.m and tf_fun functions
+% 2) method - 'none', 'zscore', 'db', 'percent'
+% 3) blTimes - [min max] times for baseline, in ms
+% 4) trlvec - vector describing which trials to average together. Each 
+%     unique value in the vector is taken to be a different trial type.
+% 5) plt - plot result? 0 or 1
 %
 %
 % E. Rawls, erawls89@gmail.com, rawls017@umn.edu. 
@@ -32,12 +35,16 @@ function TF = nf_avebase( TF, method, blTimes, plt )
 %
 % You should have received a copy of the GNU General Public License
 % along with this program; if not, write to the Free Software
-% Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+% Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 
 
-if nargin<4 || isempty(plt)
+if nargin<5 || isempty(plt)
     plt=0;
+end
+if nargin<4 || isempty(trlvec)
+    disp('No trial vector supplied - averaging all trials together');
+    trlvec = ones(1, size(TF.power,4));
 end
 if nargin<3 || isempty(blTimes)
     disp('no times provided, using all times before 0');
@@ -54,22 +61,57 @@ if nargin<1 || isempty(TF)
     error('at least a TF structure is required input');
 end
 
-%average power over trials
-TF.power = corrP(TF.power,blTimes,method);
-%get parameterized
-if isfield(TF,'SPRiNT') %parameterized
-   TF.SPRiNT.ap_power = corrP(TF.SPRiNT.ap_power,blTimes,method);
-   TF.SPRiNT.osc_power = corrP(TF.SPRiNT.osc_power,blTimes,method);
-end
-%get ITC
+%get trial info
+conds = unique(trlvec);
+
+%preallocate power/phase
+newpower = zeros(size(TF.power,1),size(TF.power,2),size(TF.power,3),numel(conds));
+%if we have phase
 if isfield(TF,'phase')
-    TF.phase = squeeze(abs(mean(exp(1i*TF.phase),4)));
+    newphase = zeros(size(TF.phase,1),size(TF.phase,2),size(TF.phase,3),numel(conds));
 end
-%set ntrials
-TF.ntrls=1;
+%if tf is parameterized
+if isfield(TF,'SPRiNT') %parameterized
+    newosc = zeros(size(TF.power,1),size(TF.power,2),size(TF.power,3),numel(conds));
+    newap = zeros(size(TF.power,1),size(TF.power,2),size(TF.power,3),numel(conds));
+end
+
+%loop thru conditions
+for n=1:numel(conds)
+    %get only condition-specific power
+    condP = TF.power(:,:,:,find(trlvec==conds(n)));
+    %average power over trials
+    newpower(:,:,:,n) = corrP(condP,blTimes,method);
+    %get parameterized
+    if isfield(TF,'SPRiNT') %parameterized
+        condap = TF.SPRiNT.ap_power(:,:,:,find(trlvec==conds(n)));
+        condosc = TF.SPRiNT.osc_power(:,:,:,find(trlvec==conds(n)));
+        newap(:,:,:,n) = corrP(condap,blTimes,method);
+        newosc(:,:,:,n) = corrP(condosc,blTimes,method);
+    end
+    %get ITC
+    if isfield(TF,'phase')
+        condphase = TF.phase(:,:,:,find(trlvec==conds(n)));
+        newphase(:,:,:,n) = squeeze(abs(mean(exp(1i*condphase),4)));
+    end
+    %set trials/erp
+    TF.trlerp(n)=numel(find(trlvec==conds(n)));
+end
+TF.conds = n;
+%add to output
+TF.ntrls = 1;
+TF.power = newpower;
+if isfield(TF,'phase')
+    TF.phase = newphase;
+end
+if isfield(TF,'SPRiNT')
+    TF.SPRiNT.osc_power = newosc;
+    TF.SPRiNT.ap_power = newap;
+end
+
 %plot results
 if plt==1
-        nf_tfPlot(TF);
+        nf_tfplot(TF);
 end
 
 end
