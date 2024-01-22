@@ -72,7 +72,7 @@ else
 end
 
 %get trial info
-conds = unique(trlvec,'stable');
+conds = unique(trlvec);
 
 %preallocate power/phase
 sz = size(TF.power);
@@ -87,8 +87,16 @@ if isfield(TF,'SPRiNT') %parameterized
     newosc = zeros([sz,numel(conds)]);
     newap = zeros([sz,numel(conds)]);
 end
-
+%if erp was removed
+if isfield(TF,'erprem') %erp-removed
+    newerprempow = zeros([sz,numel(conds)]);
+    newerpremphase = zeros([sz,numel(conds)]);
+end
 %loop thru conditions
+if isfield(TF,'behavior')
+    newBeh = TF.behavior;
+    newBeh(numel(conds)+1:end)=[];
+end
 for n=1:numel(conds)
     if flagsens==0
         %get only condition-specific power
@@ -106,6 +114,12 @@ for n=1:numel(conds)
         if isfield(TF,'phase')
             condphase = TF.phase(:,:,:,find(trlvec==conds(n)));
             newphase(:,:,:,n) = squeeze(abs(mean(exp(1i*condphase),4)));
+        end
+        %get erp removed
+        if isfield(TF,'erprem') %erp-removed
+            conderprempow = TF.erprem.erprempow(:,:,:,find(trlvec==conds(n)));
+            newerprempow(:,:,:,n) = corrP(conderprempow,blTimes,method,flagsens);
+            newerpremphase(:,:,:,n) = squeeze(abs(mean(exp(1i*condphase),4)));
         end
     else
         %get only condition-specific power
@@ -127,6 +141,10 @@ for n=1:numel(conds)
     end
     %set trials/erp
     TF.trlerp(n)=numel(find(trlvec==conds(n)));
+    %get behavior
+    if isfield(TF,'behavior')
+        newBeh(n) = fieldfun( @(varargin) nanmean([varargin{:}]), TF.behavior(find(trlvec==conds(n))) );
+    end
 end
 TF.conds = n;
 %add to output
@@ -138,6 +156,21 @@ end
 if isfield(TF,'SPRiNT')
     TF.SPRiNT.osc_power = newosc;
     TF.SPRiNT.ap_power = newap;
+end
+if isfield(TF,'erprem')
+    TF.erprem.erprempow = newerprempow;
+    TF.erprem.erpremphase = newerpremphase;
+end
+if isfield(TF,'behavior')
+    TF.behavior = newBeh;
+end
+
+%get rid of redundant fields
+if isfield(TF, 'event')
+    TF = rmfield(TF,'event');
+end
+if isfield(TF, 'epoch')
+    TF = rmfield(TF, 'epoch');
 end
 
 %plot results
