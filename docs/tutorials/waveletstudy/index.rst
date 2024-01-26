@@ -55,7 +55,7 @@ The output can be examined using the following:
 Which will produce the following:
 
 .. image:: nf_wavelet_flanker1.png
-  :width: 600
+  :width: 400
 
 Now, we need to put all of these steps in a loop. First, create a folder to hold the outputs. From now on, we will call the directory of this folder 'nf_out_path', but that should reflect an actual path on your computer. For this demonstration, we will analyze only the first 15 files to save time and space.
 
@@ -112,12 +112,14 @@ You can view the multi-subject set the same way you would view a single-subject 
 Note that the 15-subject average is very clean and shows a notable mediofrontal focus for theta. You can click the buttons next to 'time', 'frequency', and 'trial' to flip through time points, frequencies, and task conditions (congruent/incongruent) respectively. You can click sensors on the topo plot to the right to move the TF surface view to that sensor. Click sensor '87' and go to t = 400 ms and f = 5 Hz (the focus of mediofrontal theta). Then, use the 'trial' button to flip between congruent/incongruent conditions. You will see a noticeable increase in mediofrontal theta during incongruent trials:
 
 Congruent:
+
 .. image:: nf_wavelet_flanker3.png
-  :width: 600
+  :width: 400
 
 Incongruent:
+
 .. image:: nf_wavelet_flanker4.png
-  :width: 600
+  :width: 400
 
 This increase can be confirmed statistically by extracting an ROI around mediofrontal theta and using a pair-samples t-test on the data:
 
