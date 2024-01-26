@@ -2,7 +2,7 @@
 utilities
 =========
 
-The NeuroFreq Toolbox includes several high-level utilities for interacting with data. These include utilities for preparing data, conducting TF transformation, averaging and optionally baseline correcting data, and resampling TF data.
+The NeuroFreq Toolbox includes several high-level utilities for interacting with data. These include utilities for preparing data, conducting TF transformation, averaging and optionally baseline correcting data, resampling TF data, and aggregating single subject TF into a multi-subject set.
 
 .. toctree::
    :maxdepth: 2
@@ -12,6 +12,8 @@ The NeuroFreq Toolbox includes several high-level utilities for interacting with
    nf_tftransform/index
    nf_avebase/index
    nf_resample/index
+   nf_aggregate/index
+   nf_viewerapp/index
 
 
 
