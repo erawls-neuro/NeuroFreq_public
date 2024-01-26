@@ -42,7 +42,11 @@ into a single TF structure for group analysis.
 Plots a summary of TF structures averaged over trials and channels if
 applicable.
 
-
+7) nf_viewerapp:
+Allows interacting with TF structures for M/EEG including topographic 
+plots, surface plots, and scrolling through single trials. Since the TF 
+structure requires channel locations for plotting, this function only 
+applies to TF computed using the nf_tftransform function.
 
 
 
