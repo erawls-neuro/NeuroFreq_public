@@ -11,6 +11,7 @@ Once the data are downloaded, you can inspect and preprocess them in EEGLAB. We 
 Once the data are prepared to your satisfaction, navigate to the folder containing the preprocessed EEG data, and generate a list of the files using the MATLAB dir.m function:
 
 .. code-block:: matlab
+
   files = dir('*.set');
 
 Data can be loaded into memory using the EEGLAB pop_loadset.m function. Do this on the first dataset:
