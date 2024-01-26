@@ -2,8 +2,9 @@ function TF = nf_avebase( TF, method, blTimes, trlvec, plt )
 % GENERAL
 % -------
 % Averages/baselines TF structures from tftransform or from tf_fun. 
-% Power is averaged and baseline corrected according to either dB, %, or
-% z-score. If the signal contains phase, phase is processed into ITC.
+% Power is averaged and optionally baseline corrected according to either 
+% dB, %, or z-score. If the signal contains phase, phase is processed into 
+% ITC.
 %
 % OUTPUT
 % ------
