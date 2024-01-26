@@ -2,7 +2,7 @@
 tutorial: wavelet study
 =======================
 
-We will be going through the steps of completing a wavelet-based TF study using a publicly available EEG dataset available on the Open Science Foundation. These data were recorded from healthy volunteer subjects during a Flanker task assessing cognitive control.
+We will be going through the steps of completing a wavelet-based TF study using a publicly available EEG dataset available on the Open Science Framework. These data were recorded from healthy volunteer subjects during a Flanker task assessing cognitive control.
 
 First, you will need to download the data. They have already been downsampled to 250 Hz so the size is not huge. Find the data at: https://osf.io/hgc65/
 
