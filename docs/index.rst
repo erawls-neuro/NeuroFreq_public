@@ -23,7 +23,6 @@ NeuroFreq is developed by Eric Rawls, Ph.D.
 
    utilities/index
    transforms/index
-   apps/index
    demo/index
    tutorials/index
 
