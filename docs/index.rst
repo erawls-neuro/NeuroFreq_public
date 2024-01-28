@@ -4,7 +4,7 @@ NeuroFreq Documentation
 
 Time-frequency (TF) analysis of M/EEG data enables rich understanding of cortical dynamics underlying cognition, health, and disease. 
 
-This documentation describes the NeuroFreq toolbox for MATLAB, which includes multiple TF transformation algorithms that are implemented in a consistent fashion and produce consistent output.
+This documentation describes the NeuroFreq toolbox for MATLAB, which includes multiple TF transformation algorithms that are implemented in a consistent fashion and produce consistent output. NeuroFreq is developed by Eric Rawls, Ph.D.
 
 .. image:: nf_logo.png
   :width: 250
@@ -13,9 +13,8 @@ The toolbox includes TF decomposition algorithms of both linear and quadratic cl
 
 The source code of this project is located in its repository on GitHub: https://github.com/erawls-neuro/NeuroFreq_public.
 
-The NeuroFreq bioRxiv preprint can be found at: https://www.biorxiv.org/content/10.1101/2023.11.01.565154v1.
+The NeuroFreq bioRxiv preprint can be found at: https://www.biorxiv.org/content/10.1101/2023.11.01.565154v2.
 
-NeuroFreq is developed by Eric Rawls, Ph.D.
 
 .. toctree::
    :maxdepth: 2
