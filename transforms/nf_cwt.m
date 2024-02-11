@@ -42,6 +42,12 @@ function tfRes = nf_cwt(data,Fs,plt)
 % You should have received a copy of the GNU General Public License
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+%
+%
+%
+% Change Log
+% ------------
+% 2/10/24 ER: made compatible with analytic signals
 
 %defaults
 if nargin<3 || isempty(plt)
@@ -78,8 +84,13 @@ for i=1:nChan
     dataY=data(i,:);
     %continuous wavelet
     [convDat,f] = cwt(single(dataY),Fs,'amor');
-    cwtPow(i,:,:) = flipud(abs(convDat).^2);
-    cwtPhas(i,:,:) = flipud(angle(convDat));
+    if isreal(dataY)
+        cwtPow(i,:,:) = flipud(abs(convDat).^2);
+        cwtPhas(i,:,:) = flipud(angle(convDat));
+    else
+        cwtPow(i,:,:) = flipud(abs(convDat(:,:,1)).^2);
+        cwtPhas(i,:,:) = flipud(angle(convDat(:,:,1)));
+    end
     %update progress
     prog=100*(i/nChan);
     fprintf(1,'\b\b\b\b%3.0f%%',prog);

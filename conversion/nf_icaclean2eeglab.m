@@ -50,7 +50,7 @@ function EEG = nf_icaclean2eeglab(inpath,montage,saveset)
 if nargin<1 || isempty(inpath)
     disp('select input filepath:');
     inpath=uigetdir('*.mat','Select Directory:');
-    inecnt=dir([inpath '/*ecnt_af.mat']);
+    inecnt=dir([inpath '/*/*ecnt_af.mat']);
     if isempty(inecnt) %no files
         inecnt=dir([inpath '/*/*ecnt_af.mat']); %is it multiple files?
     end   
@@ -124,7 +124,7 @@ for i=1:length(inecnt)
 
     %save optional
     if saveset==1
-        [~,b]=fileparts(inecnt.name);
+        [~,b]=fileparts(inecnt(i).name);
         pop_saveset(EEG, [inpath filesep b '_eeglab.set']);
     end
     

@@ -50,6 +50,12 @@ function tfRes = nf_demodulation(data,Fs,freqs,lowpassF,order,plt)
 % You should have received a copy of the GNU General Public License
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+%
+%
+%
+% Change Log
+% ------------
+% 2/10/24 ER: made compatible with analytic signals
 
 %no plot default
 if nargin<6 || isempty(plt)
@@ -101,6 +107,7 @@ end
 %demodulate data
 prog=1;
 fprintf(1,'complex demodulation progress: %3d%%\n',prog);
+
 %sensor loop
 for elec=1:nChan
     %one sensor of data

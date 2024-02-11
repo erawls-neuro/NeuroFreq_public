@@ -27,7 +27,7 @@ function tfRes = nf_ridrihaczek(data,Fs,fRes,cwkernel,makePos,plt)
 % 3) fRes: frequency resolution of outputin Hz, defaults to N(times) freqs
 % 4) cwkernel: Choi-Williams parameter, defaults to 0.001
 % 5) makePos: make distribution positive? 0 or 1, defaults to 0 
-% 4) plt: plot result? 0 or 1, defaults to 0
+% 6) plt: plot result? 0 or 1, defaults to 0
 %
 % -----
 % E. Rawls, erawls89@gmail.com, rawls017@umn.edu. 
@@ -47,6 +47,12 @@ function tfRes = nf_ridrihaczek(data,Fs,fRes,cwkernel,makePos,plt)
 % You should have received a copy of the GNU General Public License
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+%
+%
+%
+% Change Log
+% ------------
+% 2/10/24 ER: made compatible with analytic signals
 
 %defaults
 if nargin<6 || isempty(plt)
@@ -93,10 +99,10 @@ else
     flag=0;
 end
 
-
 %progress
 prog=1;
 fprintf(1,'RID-Rihazcek progress: %3d%%\n',prog);
+
 %sensor loop
 for eloc = 1:nChan
     %trial loop
@@ -107,7 +113,7 @@ for eloc = 1:nChan
         if flag==1
             RID_Rih(:,end)=[]; %remove possible trailing point
         end
-        ridPowDat(eloc,:,:,trl) = abs( real(RID_Rih(1:numel(fout),:)) );
+        ridPowDat(eloc,:,:,trl) = real( RID_Rih(1:numel(fout),:) );
         ridPhasDat(eloc,:,:,trl) = angle( RID_Rih(1:numel(fout),:) );
     end
     %track progress

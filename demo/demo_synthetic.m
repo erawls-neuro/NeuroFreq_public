@@ -13,9 +13,11 @@ foi=.25:.25:150;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%CALL THE tf_fun DIRECTLY%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+dataClean = nf_prepdata(dataClean);
+dataNoisy = nf_prepdata(dataNoisy);
 
 %First Class: Linear Methods (clean)
-TF1 = nf_stft(dataClean,Fs,.5,80,0.1,1);                 %brief t-spectrogram
+TF1 = nf_stft(dataClean,Fs,.5,80,0.1);                 %brief t-spectrogram
 TF1.freqs = TF1.freqs(TF1.freqs<=150);
 TF1.power = TF1.power(TF1.freqs<=150,:);
 TF2 = nf_stft(dataClean,Fs,5,95,0.1);                  %long t-spectrogram

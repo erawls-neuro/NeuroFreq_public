@@ -117,12 +117,12 @@ for i=1:numel(nm)
     end
     subvec = [subvec repmat(i,[1 tfagg.conds])];
     condvec = [condvec 1:tfagg.conds];
-    
 end
 for i=1:length(subvec)
     tfagg.behavior(i).subID = subvec(i);
     tfagg.behavior(i).condition = condvec(i);
 end  
+tfagg.subid = nm;
 
 
 

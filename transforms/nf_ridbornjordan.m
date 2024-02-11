@@ -23,8 +23,8 @@ function tfRes = nf_ridbornjordan(data,Fs,fRes,kernel,makePos,plt)
 % 1) data: 1D(time), 2D(channelXtime) or 3D(channelXtimesample) (REQUIRED)
 % 2) Fs: sampling rate of signal, in Hz (REQUIRED)
 % 3) fRes: frequency spacing of output, defaults to 2*N(times) freqs
-% 4) window: rectangular window length in seconds, defaults to 2*N(times)
-% 5) pos: make result positive? 0 or 1, defaults to 0
+% 4) kernel: rectangular window length in seconds, defaults to 2*N(times)
+% 5) makePos: make result positive? 0 or 1, defaults to 0
 % 6) plt: plot result? 0 or 1, defaults to 0
 %
 % -----
@@ -45,6 +45,12 @@ function tfRes = nf_ridbornjordan(data,Fs,fRes,kernel,makePos,plt)
 % You should have received a copy of the GNU General Public License
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+%
+%
+%
+% Change Log
+% ------------
+% 2/10/24 ER: made compatible with analytic signals
 
 %defaults
 nTimes = size(data,2);
@@ -102,7 +108,7 @@ for eloc = 1:nChan
         dataY = squeeze(data(eloc,:,trl));
         %Jeff O'Neills toolbox - Born-Jordan RID
         tmpPow = born_jordan2(dataY,Fs,2*numel(fout),kernel);
-        ridPowDat(eloc,:,:,trl) = flipud(tmpPow(1:length(tmpPow(:,1))/2,:));
+        ridPowDat(eloc,:,:,trl) = tmpPow(((length(tmpPow(:,1))/2)+1):end,:);
     end
     %track progress
     prog=100*(eloc/size(data,1));

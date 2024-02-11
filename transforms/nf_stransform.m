@@ -1,4 +1,4 @@
-function tfRes = nf_stransform(data,Fs,plt)
+function tfRes = nf_stransform(data,Fs,factor,plt)
 % GENERAL
 % -------
 % Calculates time-frequency of an input dataset (1/2/3D) using the
@@ -25,7 +25,8 @@ function tfRes = nf_stransform(data,Fs,plt)
 % -----
 % 1) data: 1D(time), 2D(channelXtime) or 3D(channelXtimesample) (REQUIRED)
 % 2) Fs: sampling rate of signal, in Hz (REQUIRED)
-% 3) plt: plot result? 0 or 1, defaults to 0
+% 3) factor: Gaussian windowing factor. Usually 1, 3 for high resolution.
+% 4) plt: plot result? 0 or 1, defaults to 0
 %
 % -----
 % E. Rawls, erawls89@gmail.com, rawls017@umn.edu. 
@@ -45,10 +46,22 @@ function tfRes = nf_stransform(data,Fs,plt)
 % You should have received a copy of the GNU General Public License
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+%
+%
+%
+% Change Log
+% ------------
+% 2/10/24 ER: change implementation of stransform to Stockwell's original
+% 2/10/24 ER: add 'factor' option
+% 2/10/24 ER: made compatible with analytic signals
 
 %defaults
-if nargin<3 || isempty(plt)
+if nargin<4 || isempty(plt)
     plt=0;
+end
+if nargin<3 || isempty(factor)
+    factor=1;
+    disp('setting factor to 1 (default)');
 end
 if nargin<2 || isempty(Fs) || isempty(data)
     error('at least a signal and sampling rate are required inputs');
@@ -74,6 +87,7 @@ stransPhas = zeros(nChan,numel(fout),nTimes,nTrls); %preallocate
 %do S-transform
 prog=1;
 fprintf(1,'S-transform progress: %3d%%\n',prog);
+
 %sensor loop
 for i=1:nChan
     %trial loop
@@ -81,7 +95,7 @@ for i=1:nChan
         %one sensor/trial of data
         dataY=squeeze(data(i,:,j));
         %do S-transform
-        tmpPow = stran(dataY);
+        tmpPow = stransf(dataY,factor);
         %get power/phase
         stransPow(i,:,:,j) = abs(tmpPow).^2; %power
         stransPhas(i,:,:,j) = angle(tmpPow); %phase angle
@@ -101,6 +115,7 @@ tfRes.times=0:1/Fs:((1/Fs)*nTimes)-(1/Fs);
 tfRes.nsensor=nChan;
 tfRes.ntrls=nTrls;
 tfRes.Fs=Fs;
+tfRes.factor=factor;
 tfRes.method='stransform';
 tfRes.scale = 'linear';
 
@@ -116,16 +131,17 @@ end
 % a clever implementation of s-transform uses the toeplitz matrix to avoid a
 % for-loop - this idea is borrowed from 
 % https://www.mathworks.com/matlabcentral/fileexchange/45848-stockwell-transform-s-transform
+%unfortunately, this implementation fails for analytic signals
 function stockTF = stran(data)
     %ensure h is a column vector
     if ~iscolumn(data)
         data = data(:);
     end
-    size = numel(data);
-    half_size = floor(size/2);
-    oddSize = mod(size,2);
+    len = numel(data);
+    half_size = floor(len/2);
+    oddSize = mod(len,2);
     %construct frequency vector
-    freqs = [(0:half_size) (-half_size+1-oddSize:-1)]/size;
+    freqs = [(0:half_size) (-half_size+1-oddSize:-1)]/len;
     %perform FFT
     hfft = fft(data);
     invFreqs = 1./freqs(2:half_size+1)';
@@ -138,7 +154,40 @@ function stockTF = stran(data)
     topFFT = topFFT(2:half_size+1,:);
     stockTF = ifft(topFFT.*Gauss,[],2);
     % Prepend mean
-    st0 = mean(data)*ones(1,size);
+    st0 = mean(data)*ones(1,len);
     stockTF = [st0; stockTF];
 end
+
+
+%a modified version of Stockwell's 1996 code
+%he has a great sense of humor
+function stockTF = stransf(data,factor)
+%ensure h is a column vector
+if ~iscolumn(data)
+    data = data(:);
+end
+% Compute the length of the data.
+n=length(data);
+% Compute FFT's
+vector_fft=fft(data);
+vector_fft=[vector_fft,vector_fft];
+% Preallocate the STOutput matrix
+stockTF=zeros(fix(n/2)+1,n);
+% Compute the mean
+stockTF(1,:) = mean(data)*(1&[1:1:n]);
+% Start loop to increment the frequency point
+for banana=1:fix(n/2)
+    number=banana+1;
+    vector(1,:)=0:n-1;
+    vector(2,:)=-n:-1;
+    vector=vector.^2;
+    vector=vector*(-factor*2*pi^2/banana^2);
+    % Compute the Gaussion window
+    gauss=sum(exp(vector));
+    stockTF(number,:)=ifft(vector_fft(banana+1:banana+n).*gauss);
+end   % a fruit loop!   aaaaa ha ha ha ha ha ha ha ha ha ha
+end
+
+
+
 

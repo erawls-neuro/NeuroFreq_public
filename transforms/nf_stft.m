@@ -48,6 +48,12 @@ function tfRes = nf_stft(data,Fs,window,overlap,fRes,plt)
 % You should have received a copy of the GNU General Public License
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+%
+%
+%
+% Change Log
+% ------------
+% 2/10/24 ER: made compatible with analytic signals
 
 %defaults
 if nargin<6 || isempty(plt)
@@ -100,11 +106,18 @@ if o>=length(w)
     o = length(w)-1;
 end
 
+%is signal complex?
+if ~isreal(data)
+    fra = 'twosided';
+else
+    fra='onesided';
+end
+
 %find current version of matlab - if >R2019a stft, else spectrogram
 if ~verLessThan('matlab','9.6') %stft was not introduced until 2019a
     %test run - figure out returned times/frequencies for preallocation
     [~,f,t] = stft(single(squeeze(data(1,:,1))),Fs,...
-        'Window',w,'OverlapLength',o,'FrequencyRange','onesided',...
+        'Window',w,'OverlapLength',o,'FrequencyRange',fra,...
         'FFTLength',round(Fs/fRes)); %test
     specPow = zeros(nChan,numel(f),numel(t),nTrls); %preallocate
     specPhas = zeros(nChan,numel(f),numel(t),nTrls); %preallocate
@@ -115,7 +128,7 @@ if ~verLessThan('matlab','9.6') %stft was not introduced until 2019a
     for i = 1:nChan
         dataY=squeeze(data(i,:,:)); %one channel of data
         [specDat,f,t] = stft(single(dataY),Fs,...
-            'Window',w,'OverlapLength',o,'FrequencyRange','onesided',...
+            'Window',w,'OverlapLength',o,'FrequencyRange',fra,...
             'FFTLength',round(Fs/fRes)); %stft
         specDat = specDat./sum(w.^2); %normalize
         specPow(i,:,:,:) = abs(specDat).^2; %square magnitude

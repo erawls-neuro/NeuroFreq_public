@@ -50,7 +50,12 @@ function tfRes = nf_filterhilbert(data,Fs,freqs,fBandWidth,order,plt)
 % You should have received a copy of the GNU General Public License
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-
+%
+%
+%
+% Change Log
+% ------------
+% 2/10/24 ER: made compatible with analytic signals
 
 %defaults
 if nargin<6 || isempty(plt)
@@ -84,8 +89,7 @@ end
 
 %make data long in time
 data=reshape(data,nChan,nTimes*nTrls); %concatenate times
-hilbPow = zeros(nChan,numel(freqs),nTimes*nTrls); %preallocate
-hilbPhas = zeros(nChan,numel(freqs),nTimes*nTrls); %preallocate
+filtPow = zeros(nChan,numel(freqs),nTimes*nTrls); %preallocate
 
 
 % parse foverlap
@@ -114,10 +118,7 @@ for j=1:numel(freqs)
         dataY=data(i,:);
         %apply filters
         fD = filtfilt(a1,b1,double(dataY)); %high-pass
-        fD = filtfilt(a2,b2,double(fD)); %low-pass
-        %get power/phase with hilbert transform
-        hilbPow(i,j,:) = envelope(fD).^2;
-        hilbPhas(i,j,:) = angle(hilbert(fD));
+        filtPow(i,j,:) = filtfilt(a2,b2,double(fD)); %low-pass
     end
     %update progress bar
     prog=100*(j/numel(freqs));
@@ -125,7 +126,19 @@ for j=1:numel(freqs)
 end
 fprintf(1,'\n');
 
-
+if isreal(filtPow)
+    %get power/phase with hilbert transform
+    for j=1:numel(freqs)
+        for i=1:nChan
+            hilbPow = envelope(filtPow(i,j,:)).^2;
+            hilbPhas = angle(hilbert(filtPow(i,j,:)));
+        end
+    end
+else
+    hilbPow = abs(filtPow).^2;
+    hilbPhas = angle(filtPow);
+end
+        
 %format
 tfRes.power = squeeze(reshape(hilbPow,nChan,numel(freqs),nTimes,nTrls)); %power, reshape back
 tfRes.phase = squeeze(reshape(hilbPhas,nChan,numel(freqs),nTimes,nTrls)); %phase, reshape back
