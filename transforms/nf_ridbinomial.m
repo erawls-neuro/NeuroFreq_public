@@ -1,4 +1,4 @@
-function tfRes = nf_ridbinomial(data,Fs,fRes,kernel,makePos,plt)
+function tfRes = nf_ridbinomial(data,Fs,fRes,maxlags,makePos,plt)
 % GENERAL
 % -------
 % Calculates time-frequency of an input dataset (1/2/3D) using Cohen's
@@ -22,8 +22,8 @@ function tfRes = nf_ridbinomial(data,Fs,fRes,kernel,makePos,plt)
 % -----
 % 1) data: 1D(time), 2D(channelXtime) or 3D(channelXtimesample) (REQUIRED)
 % 2) Fs: sampling rate of signal, in Hz (REQUIRED)
-% 3) fRes: frequency spacing of output, defaults to 2*N(times) freqs
-% 4) kernel: window length in seconds, defaults to 2*N(times)
+% 3) fRes: frequency spacing of output, defaults to n(times)
+% 4) maxlags: autocorrelation window length in s, defaults to n(times)
 % 5) makePos: make result positive? 0 or 1, defaults to 0
 % 6) plt: plot result? 0 or 1, defaults to 0
 %
@@ -61,11 +61,11 @@ if nargin<5 || isempty(makePos)
     makePos=0;
     disp('returning both positive and negative values (default)');
 end
-if nargin<4 || isempty(kernel)
-    kernel=2*nTimes;
+if nargin<4 || isempty(maxlags)
+    maxlags=2*nTimes;
     disp('setting window length to 2*N (default)');
 else
-    kernel = round(kernel*Fs);
+    maxlags = round(maxlags*Fs);
 end
 if nargin<3 || isempty(fRes)
     fout = linspace(0,Fs/2,nTimes);
@@ -92,9 +92,9 @@ end
 ridPowDat = zeros(nChan,numel(fout),nTimes,nTrls); %preallocate
 
 %make window
-kernel=min(numel(fout),kernel);
-if mod(kernel,2)==1
-    kernel=kernel-1;
+maxlags=min(numel(fout),maxlags);
+if mod(maxlags,2)==1
+    maxlags=maxlags-1;
 end
 
 %progress
@@ -108,7 +108,7 @@ for eloc = 1:nChan
         %get one sensor of data
         dataY = squeeze(data(eloc,:,trl));
         %Jeff O'Neills toolbox - binomial kernel RID
-        tmpPow = binomial2(dataY,Fs,2*numel(fout),kernel);
+        tmpPow = binomial2(dataY,Fs,2*numel(fout),maxlags);
         ridPowDat(eloc,:,:,trl) = tmpPow(((length(tmpPow(:,1))/2)+1):end,:);
     end
     %track progress
@@ -130,7 +130,7 @@ tfRes.times=0:1/Fs:((1/Fs)*nTimes)-(1/Fs);
 tfRes.nsensor=nChan;
 tfRes.ntrls=nTrls;
 tfRes.Fs=Fs;
-tfRes.kernel=kernel;
+tfRes.kernel=maxlags;
 tfRes.makePos=makePos;
 tfRes.method='binomial2';
 tfRes.scale = 'linear';

@@ -63,8 +63,7 @@ function [tfRes,p] = nf_tftransform(EEG,varargin)
 %   stft,binomial2,bornjordan2,ridrihaczek: 'fRes': frequency resolution 
 %                       i.e. 0.5 Hz, 'makePos': make surfaces positive?
 %
-%   binomial2,bornjordan2: 'kernel': length of kernel in ambiguity
-%                       domain
+%   binomial2,bornjordan2: 'maxlags': length of autocorrelation window
 %
 %   ridrihaczek: 'cwkernel': Choi-Williams kernel size
 %
@@ -119,7 +118,7 @@ defaultOrder = [];%3;
 defaultWindow = [];%.5;
 defaultOverlap = [];%80;
 defaultlowpassF = [];%3;
-defaultKernel = [];%2*EEG.pnts;
+defaultMaxLag = [];%2*EEG.pnts;
 defaultCWKernel = [];%0.001;
 defaultfRes = [];%0.25;
 defaultMakePos = [];%0;
@@ -139,7 +138,7 @@ addParameter(p,'order',defaultOrder,validScalar); %filter-hilbert,demodulation
 addParameter(p,'lowpassF',defaultlowpassF,validScalar); %demodulation
 addParameter(p,'cycles',defaultCycles); %wavelet
 addParameter(p,'fRes',defaultfRes,validScalar); %binomial2,bornjordan2,ridrihaczek
-addParameter(p,'kernel',defaultKernel); %binomial2,bornjordan2
+addParameter(p,'maxLags',defaultMaxLag); %binomial2,bornjordan2
 addParameter(p,'cwkernel',defaultCWKernel); %ridRihaczek
 addParameter(p,'makePos',defaultMakePos,validScalar); %binomial2,bornjordan2,ridrihaczek
 
@@ -157,7 +156,7 @@ order=p.Results.order;
 lowpassF=p.Results.lowpassF;
 cycles=p.Results.cycles;
 fRes=p.Results.fRes;
-kernel=p.Results.kernel;
+maxLag=p.Results.kernel;
 cwkernel=p.Results.cwkernel;
 makePos=p.Results.makePos;
 reqT=p.Results.times;
@@ -197,12 +196,12 @@ switch method
     case 'ridbinomial'
         tfRes = nf_ridbinomial(data,Fs,...
                 fRes,...
-                kernel,...
+                maxLag,...
                 makePos);
     case 'ridbornjordan'
         tfRes = nf_ridbornjordan(data,Fs,...
                 fRes,...
-                kernel,...
+                maxLag,...
                 makePos);
     case 'ridrihaczek'
         tfRes = nf_ridrihaczek(data,Fs,...
