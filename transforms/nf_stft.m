@@ -54,6 +54,7 @@ function tfRes = nf_stft(data,Fs,window,overlap,fRes,plt)
 % Change Log
 % ------------
 % 2/10/24 ER: made compatible with analytic signals
+% 4/5/24 ER: fix window normalization
 
 %defaults
 if nargin<6 || isempty(plt)
@@ -130,7 +131,7 @@ if ~verLessThan('matlab','9.6') %stft was not introduced until 2019a
         [specDat,f,t] = stft(single(dataY),Fs,...
             'Window',w,'OverlapLength',o,'FrequencyRange',fra,...
             'FFTLength',round(Fs/fRes)); %stft
-        specDat = specDat./sum(w.^2); %normalize
+        specDat = specDat./sum(w); %normalize
         specPow(i,:,:,:) = abs(specDat).^2; %square magnitude
         specPhas(i,:,:,:) = angle(specDat); %argument
         %update progress
@@ -152,7 +153,7 @@ else
         for trl = 1:nTrls
             dataY=squeeze(data(i,:,trl)); %one trial of data
             specDat = spectrogram(single(dataY),w,o,round(Fs/fRes),Fs); %spectrogram
-            specDat = specDat./sum(w.^2); %normalize
+            specDat = specDat./sum(w); %normalize
             specPow(i,:,:,trl) = abs(specDat).^2; %square magnitude
             specPhas(i,:,:,trl) = angle(specDat); %argument
             %update progress
