@@ -1,4 +1,4 @@
-function dOut = nf_prepdata( EEG, center, detrend, taper, analytic )
+function dOut = nf_prepdata( EEG, center, detrend, taper, analytic)
 % GENERAL
 % -------
 %
@@ -24,6 +24,7 @@ function dOut = nf_prepdata( EEG, center, detrend, taper, analytic )
 % 3) detrend - remove polynomial? 0 or 1
 % 4) taper - taper outer 5% of data points? 0 or 1
 % 5) analytic: make signal analytic? 0 or 1
+% 6) wdn: wavelet denoise (despiking)? 0 or 1
 %
 % E. Rawls, erawls89@gmail.com, rawls017@umn.edu. 
 % July 2023
@@ -49,6 +50,7 @@ function dOut = nf_prepdata( EEG, center, detrend, taper, analytic )
 % ------------
 % 2/10/24 ER: add 'analytic' option
 % 2/10/24 ER: made all options, optional
+
 
 if nargin<5 || isempty(analytic)
     disp('no argument for analytic - making signal analytic (default)');

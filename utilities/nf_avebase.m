@@ -1,4 +1,4 @@
-function TF = nf_avebase( TF, method, blTimes, trlvec, plt )
+function TF = nf_avebase( TF, method, blTimes, trlvec, avmode )
 % GENERAL
 % -------
 % Averages/baselines TF structures from tftransform or from tf_fun. 
@@ -17,7 +17,7 @@ function TF = nf_avebase( TF, method, blTimes, trlvec, plt )
 % 3) blTimes - [min max] times for baseline, in ms
 % 4) trlvec - vector describing which trials to average together. Each 
 %     unique value in the vector is taken to be a different trial type.
-% 5) plt - plot result? 0 or 1
+% 5) avmode - 'mean' or 'median'
 %
 %
 % E. Rawls, erawls89@gmail.com, rawls017@umn.edu. 
@@ -37,11 +37,19 @@ function TF = nf_avebase( TF, method, blTimes, trlvec, plt )
 % You should have received a copy of the GNU General Public License
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+%
+%
+% ===========
+% Change Log:
+% ===========
+% 5/17/24: ER modified to include averaging scaled single-trial
+%   ERPs from erp removal (Cohen and Donner 2013)
+% 5/23/24: ER removed option "plot"
 
 
-
-if nargin<5 || isempty(plt)
-    plt=0;
+if nargin<5 || isempty(avmode)
+    disp('No averaging mode supplied - using mean');
+    avmode = 'mean';
 end
 if nargin<4 || isempty(trlvec)
     disp('No trial vector supplied - averaging all trials together');
@@ -91,6 +99,7 @@ end
 %if erp was removed
 if isfield(TF,'erprem') %erp-removed
     newerprempow = zeros([sz,numel(conds)]);
+    newerppow = zeros([sz,numel(conds)]);
     newerpremphase = zeros([sz,numel(conds)]);
 end
 %loop thru conditions
@@ -103,13 +112,13 @@ for n=1:numel(conds)
         %get only condition-specific power
         condP = TF.power(:,:,:,find(trlvec==conds(n)));
         %average power over trials
-        newpower(:,:,:,n) = corrP(condP,blTimes,method,flagsens);
+        newpower(:,:,:,n) = corrP(condP,blTimes,method,flagsens,avmode);
         %get parameterized
         if isfield(TF,'SPRiNT') %parameterized
             condap = TF.SPRiNT.ap_power(:,:,:,find(trlvec==conds(n)));
             condosc = TF.SPRiNT.osc_power(:,:,:,find(trlvec==conds(n)));
-            newap(:,:,:,n) = corrP(condap,blTimes,method,flagsens);
-            newosc(:,:,:,n) = corrP(condosc,blTimes,method,flagsens);
+            newap(:,:,:,n) = corrP(condap,blTimes,method,flagsens,avmode);
+            newosc(:,:,:,n) = corrP(condosc,blTimes,method,flagsens,avmode);
         end
         %get ITC
         if isfield(TF,'phase')
@@ -119,20 +128,23 @@ for n=1:numel(conds)
         %get erp removed
         if isfield(TF,'erprem') %erp-removed
             conderprempow = TF.erprem.erprempow(:,:,:,find(trlvec==conds(n)));
-            newerprempow(:,:,:,n) = corrP(conderprempow,blTimes,method,flagsens);
-            newerpremphase(:,:,:,n) = squeeze(abs(mean(exp(1i*condphase),4)));
+            conderpremphase = TF.erprem.erpremphase(:,:,:,find(trlvec==conds(n)));
+            newerprempow(:,:,:,n) = corrP(conderprempow,blTimes,method,flagsens,avmode);
+            newerpremphase(:,:,:,n) = squeeze(abs(mean(exp(1i*conderpremphase),4)));
+            conderppow = TF.erprem.erppow(:,:,:,find(trlvec==conds(n)));
+            newerppow(:,:,:,n) = corrP(conderppow,blTimes,method,flagsens,avmode);
         end
     else
         %get only condition-specific power
         condP = TF.power(:,:,find(trlvec==conds(n)));
         %average power over trials
-        newpower(:,:,n) = corrP(condP,blTimes,method,flagsens);
+        newpower(:,:,n) = corrP(condP,blTimes,method,flagsens,avmode);
         %get parameterized
         if isfield(TF,'SPRiNT') %parameterized
             condap = TF.SPRiNT.ap_power(:,:,find(trlvec==conds(n)));
             condosc = TF.SPRiNT.osc_power(:,:,find(trlvec==conds(n)));
-            newap(:,:,n) = corrP(condap,blTimes,method,flagsens);
-            newosc(:,:,n) = corrP(condosc,blTimes,method,flagsens);
+            newap(:,:,n) = corrP(condap,blTimes,method,flagsens,avmode);
+            newosc(:,:,n) = corrP(condosc,blTimes,method,flagsens,avmode);
         end
         %get ITC
         if isfield(TF,'phase')
@@ -161,6 +173,7 @@ end
 if isfield(TF,'erprem')
     TF.erprem.erprempow = newerprempow;
     TF.erprem.erpremphase = newerpremphase;
+    TF.erprem.erppow = newerppow;
 end
 if isfield(TF,'behavior')
     TF.behavior = newBeh;
@@ -174,23 +187,26 @@ if isfield(TF, 'epoch')
     TF = rmfield(TF, 'epoch');
 end
 
-%plot results
-if plt==1
-    nf_tfplot(TF);
-end
-
 end
 
 
 
 
-function power = corrP(power,blTimes,method,flagsens) %average power over trials
+function power = corrP(power,blTimes,method,flagsens,avmode) %average power over trials
 tfPow = squeeze(mean( power,ndims(power) ));
 if flagsens==0
-    blPow = repmat(squeeze(mean( tfPow(:,:,blTimes), 3)), [1,1,size(power,3)]);
+    if strcmp(avmode,'mean')
+        blPow = repmat(squeeze(mean( tfPow(:,:,blTimes), 3)), [1,1,size(power,3)]);
+    elseif strcmp(avmode,'median')
+        blPow = repmat(squeeze(median( tfPow(:,:,blTimes), 3)), [1,1,size(power,3)]);
+    end
     blPowSTD = repmat(squeeze(std(permute(tfPow,[3,1,2]))), [1,1,size(power,3)]);
 else
-    blPow = repmat(squeeze(mean( tfPow(:,blTimes), 2)), [1,size(power,2)]);
+    if strcmp(avmode,'mean')
+        blPow = repmat(squeeze(mean( tfPow(:,blTimes), 2)), [1,size(power,2)]);
+    elseif strcmp(avmode,'median')
+        blPow = repmat(squeeze(median( tfPow(:,blTimes), 2)), [1,size(power,2)]);
+    end
     blPowSTD = repmat(squeeze(std(permute(tfPow,[2,1]))), [1,size(power,2)]);
 end
 %correct power

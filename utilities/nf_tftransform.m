@@ -1,11 +1,11 @@
 function [tfRes,p] = nf_tftransform(EEG,varargin)
 % GENERAL
 % -------
-% Quickly and flexibly return time-frequency 
-% transformations for input EEG data. Inputs must be EEGLAB .set 
-% structures; for raw data matrices use the transform directly rather than 
-% nf_tfTransform. Uses various methods, see the readme in the transforms
-% directory for details.
+% The main TF transformation function of NeuroFreq. Quickly and flexibly 
+% return time-frequency transformations for input EEG data. Inputs must be 
+% EEGLAB .set structures; for raw data matrices use the transform directly 
+% rather than nf_tftransform. Uses various methods, see the readme in the 
+% transforms directory for details.
 %
 % OUTPUT:
 % -------
@@ -28,8 +28,6 @@ function [tfRes,p] = nf_tftransform(EEG,varargin)
 %   'method': method for tf calculation. Can be any supported - new methods
 %       should be made in conformance with the formatting of the transforms.
 %       Find supported methods below and in the transforms folder.
-%
-%   'plot': plot a basic TF surface
 %
 %   'freqs': REQUIRED for wavelet,filterhilbert,demodulation. Must be a 
 %                       vector of numbers (i.e. 1:30). Only some methods 
@@ -85,6 +83,12 @@ function [tfRes,p] = nf_tftransform(EEG,varargin)
 % You should have received a copy of the GNU General Public License
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+%
+%
+% ===========
+% Change Log:
+% ===========
+% 5/23/24: ER removed option "plot"
 
 % parse input
 p = inputParser;
@@ -97,7 +101,7 @@ validScalar = @(x) length(x)==1;
 expectedMethods = {'stft' ... %spectrogram
                    'filterhilbert' ... %filter and Hilbert transform
                    'demodulation'... %complex demodulation
-                   'wavelet'... %Custom wavelet transform
+                   'dcwt'... %Custom wavelet transform
                    'cwt'... %continuous wavelet transform
                    'stransform'... %Stockwell transform
                    'ridbinomial',... %type-II binomial RID
@@ -108,7 +112,7 @@ expectedMethods = {'stft' ... %spectrogram
 %DEFAULTS                   
 %all methods
 defaultMethod = 'wavelet';
-defaultPlot = 0;
+% defaultPlot = 0;
 defaultFreqs = []; %1:1:floor(EEG.srate/4);
 defaultTimes = [EEG.xmin EEG.xmax];
 %pass on defaults
@@ -127,7 +131,7 @@ defaultMakePos = [];%0;
 addRequired(p,'EEG'); %EEGLAB set
 %all methods
 addParameter(p,'method',defaultMethod,@(x) any(validatestring(x,expectedMethods))); %basically required
-addParameter(p,'plt',defaultPlot); %Any method
+% addParameter(p,'plt',defaultPlot); %Any method
 addParameter(p,'freqs',defaultFreqs,validMonotonicVector); %freq vector
 addParameter(p,'times',defaultTimes,validNumVector); %time vector
 %only some methods
@@ -147,7 +151,7 @@ parse(p,EEG,varargin{:});
 
 %get all inputs for ease
 method=p.Results.method;
-plt=p.Results.plt;
+% plt=p.Results.plt;
 freqs=p.Results.freqs;
 window=p.Results.window;
 overlap=p.Results.overlap;
@@ -184,8 +188,8 @@ switch method
                 freqs,...
                 lowpassF,...
                 order);
-    case 'wavelet'
-        tfRes = nf_wavelet(data,Fs,...
+    case 'dcwt'
+        tfRes = nf_dcwt(data,Fs,...
                 freqs,...
                 cycles);
     case 'cwt'
@@ -249,8 +253,8 @@ if isfield(EEG.etc,'behavior')
 end
 
 % plot results
-if plt==1
-    nf_tfplot(tfRes);
-end
+% if plt==1
+%     nf_tfplot(tfRes);
+% end
 
 end
