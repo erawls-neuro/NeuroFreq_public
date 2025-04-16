@@ -89,6 +89,7 @@ function [tfRes,p] = nf_tftransform(EEG,varargin)
 % Change Log:
 % ===========
 % 5/23/24: ER removed option "plot"
+% 12/7/25: ER added MTFT option
 
 % parse input
 p = inputParser;
@@ -99,6 +100,7 @@ validScalar = @(x) length(x)==1;
 
 %set legal methods
 expectedMethods = {'stft' ... %spectrogram
+                   'mtft' ... %multi-taper Fourier transform
                    'filterhilbert' ... %filter and Hilbert transform
                    'demodulation'... %complex demodulation
                    'dcwt'... %Custom wavelet transform
@@ -116,6 +118,7 @@ defaultMethod = 'wavelet';
 defaultFreqs = []; %1:1:floor(EEG.srate/4);
 defaultTimes = [EEG.xmin EEG.xmax];
 %pass on defaults
+defaultnTaper = [];%5
 defaultCycles = [];%3;
 defaultBandWidth = [];%1;
 defaultOrder = [];%3;
@@ -145,6 +148,7 @@ addParameter(p,'fRes',defaultfRes,validScalar); %binomial2,bornjordan2,ridrihacz
 addParameter(p,'maxLags',defaultMaxLag); %binomial2,bornjordan2
 addParameter(p,'cwkernel',defaultCWKernel); %ridRihaczek
 addParameter(p,'makePos',defaultMakePos,validScalar); %binomial2,bornjordan2,ridrihaczek
+addParameter(p,'nTapers',defaultnTaper,validScalar); %binomial2,bornjordan2,ridrihaczek
 
 %parse
 parse(p,EEG,varargin{:});
@@ -167,6 +171,7 @@ reqT=p.Results.times;
 Fs=EEG.srate;
 data=EEG.data;
 times = EEG.times/1000;
+nTapers=p.Results.nTapers;
 
 % OPTIONS
 method = lower(method);
@@ -177,6 +182,13 @@ switch method
                 window,...
                 overlap,...
                 fRes);
+        times = times(1)+tfRes.times; %refigure times
+    case 'mtft'
+        tfRes = nf_mtft(data,Fs,...
+                window,...
+                overlap,...
+                fRes,...
+                nTapers);
         times = times(1)+tfRes.times; %refigure times
     case 'filterhilbert'
         tfRes = nf_filterhilbert(data,Fs,...

@@ -33,6 +33,11 @@ function TF = nf_resample( TF, tVec, fVec )
 % You should have received a copy of the GNU General Public License
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+%
+%
+% Change log:
+% 12/14/24: ER made outputs double
+
 
 if nargin<3
     fVec = [];
@@ -101,7 +106,10 @@ if ~isempty(fVec)
     end
     TF.freqs=fVec;
 end
-
+%make everything a double
+TF.power = double(TF.power);
+TF.times = double(TF.times);
+TF.freqs = double(TF.freqs);
 end
 
 

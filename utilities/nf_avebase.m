@@ -3,12 +3,12 @@ function TF = nf_avebase( TF, method, blTimes, trlvec, avmode )
 % -------
 % Averages/baselines TF structures from tftransform or from tf_fun. 
 % Power is averaged and optionally baseline corrected according to either 
-% dB, %, or z-score. If the signal contains phase, phase is processed into 
-% ITC.
+% dB, %-change, or z-score. If the signal contains phase, phase is 
+% processed into ITC.
 %
 % OUTPUT
 % ------
-% TF - structure output by tfUtility.m and tf_fun functions (averaged)
+% TF - structure output by nf_tftransform.m and tf functions (averaged)
 %
 % INPUT
 % -----
@@ -45,6 +45,8 @@ function TF = nf_avebase( TF, method, blTimes, trlvec, avmode )
 % 5/17/24: ER modified to include averaging scaled single-trial
 %   ERPs from erp removal (Cohen and Donner 2013)
 % 5/23/24: ER removed option "plot"
+% 2/24/25: ER fixed zscore baseline correction to only compute std over
+%   baseline time points rather than all times
 
 
 if nargin<5 || isempty(avmode)
@@ -197,17 +199,19 @@ tfPow = squeeze(mean( power,ndims(power) ));
 if flagsens==0
     if strcmp(avmode,'mean')
         blPow = repmat(squeeze(mean( tfPow(:,:,blTimes), 3)), [1,1,size(power,3)]);
+        blPowSTD = repmat(squeeze(std(permute(tfPow(:,:,blTimes),[3,1,2]))), [1,1,size(power,3)]);
     elseif strcmp(avmode,'median')
         blPow = repmat(squeeze(median( tfPow(:,:,blTimes), 3)), [1,1,size(power,3)]);
+        blPowSTD = repmat(squeeze(mad(permute(tfPow(:,:,blTimes),[3,1,2]))), [1,1,size(power,3)]);
     end
-    blPowSTD = repmat(squeeze(std(permute(tfPow,[3,1,2]))), [1,1,size(power,3)]);
 else
     if strcmp(avmode,'mean')
         blPow = repmat(squeeze(mean( tfPow(:,blTimes), 2)), [1,size(power,2)]);
+        blPowSTD = repmat(squeeze(std(permute(tfPow(:,blTimes),[2,1]))), [1,size(power,2)]);
     elseif strcmp(avmode,'median')
         blPow = repmat(squeeze(median( tfPow(:,blTimes), 2)), [1,size(power,2)]);
+        blPowSTD = repmat(squeeze(mad(permute(tfPow(:,blTimes),[2,1]))), [1,size(power,2)]);
     end
-    blPowSTD = repmat(squeeze(std(permute(tfPow,[2,1]))), [1,size(power,2)]);
 end
 %correct power
 switch method
