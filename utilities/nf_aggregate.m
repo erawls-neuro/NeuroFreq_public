@@ -65,7 +65,7 @@ for i=1:numel(nm)
             tfagg.cpm.PLmean = zeros( numel(nm), numel({tfagg.chanlocs.labels}), numel(tfagg.freqs), numel(tfagg.times), tf.conds );
             tfagg.cpm.NPLmean = zeros( numel(nm), numel({tfagg.chanlocs.labels}), numel(tfagg.freqs), numel(tfagg.times), tf.conds );
             tfagg.cpm.PLvar = zeros( numel(nm), numel({tfagg.chanlocs.labels}), numel(tfagg.freqs), numel(tfagg.times), tf.conds );
-            tfagg.cpm.NPLmean = zeros( numel(nm), numel({tfagg.chanlocs.labels}), numel(tfagg.freqs), numel(tfagg.times), tf.conds );
+            tfagg.cpm.NPLvar = zeros( numel(nm), numel({tfagg.chanlocs.labels}), numel(tfagg.freqs), numel(tfagg.times), tf.conds );
             tfagg.cpm.alpha = zeros( numel(nm), numel({tfagg.chanlocs.labels}), numel(tfagg.freqs), numel(tfagg.times), tf.conds );
         end
         if isfield(tf,'erprem')
@@ -104,7 +104,7 @@ for i=1:numel(nm)
         tfagg.cpm.PLmean(i,:,:,:,:) = tf.cpm.PLmean;
         tfagg.cpm.NPLmean(i,:,:,:,:) = tf.cpm.NPLmean;
         tfagg.cpm.PLvar(i,:,:,:,:) = tf.cpm.PLvar;
-        tfagg.cpm.NPLmean(i,:,:,:,:) = tf.cpm.NPLmean;
+        tfagg.cpm.NPLvar(I,:,:,:,:) = tf.cpm.NPLvar;
         tfagg.cpm.alpha(i,:,:,:,:) = tf.cpm.alpha;
     end
     if isfield(tf,'erprem')
