@@ -1,4 +1,4 @@
-function tfRes = nf_wavelet(data,Fs,freqs,cycles,plt)
+function tfRes = nf_dcwt(data,Fs,freqs,cycles,plt)
 % GENERAL
 % -------
 % Calculates time-frequency of an input dataset (1/2/3D) using discretized

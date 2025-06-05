@@ -21,7 +21,7 @@ Other functions use custom implementations of TF decomposition methods.
 These include:
 1) nf_filterhilbert
 2) nf_demodulation
-3) nf_wavelet
+3) nf_dcwt
 4) nf_stransform
 
 Many functions use matlab built-in functions other than direct TF 
@@ -51,7 +51,7 @@ Complex demodulation. Multiplies the data with a series of complex
 oscillations (demodulation), then low-pass filters the data to recover the 
 demodulated frequency. Returns power and phase estimates.
 
-4) nf_wavelet:
+4) nf_dcwt:
 Custom Morlet wavelets described in Cohen (2014). Allows adaptive changes 
 in Wavelet time-frequency spread by changing cycle number. Wavelets are 
 power-normalized in the frequency domain by dividing the wavelet FFT power 
