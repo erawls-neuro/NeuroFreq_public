@@ -89,7 +89,7 @@ function [tfRes,p] = nf_tftransform(EEG,varargin)
 % Change Log:
 % ===========
 % 5/23/24: ER removed option "plot"
-% 12/7/25: ER added MTFT option
+
 
 % parse input
 p = inputParser;
@@ -100,7 +100,6 @@ validScalar = @(x) length(x)==1;
 
 %set legal methods
 expectedMethods = {'stft' ... %spectrogram
-                   'mtft' ... %multi-taper Fourier transform
                    'filterhilbert' ... %filter and Hilbert transform
                    'demodulation'... %complex demodulation
                    'dcwt'... %Custom wavelet transform
@@ -179,13 +178,6 @@ switch method
                 window,...
                 overlap,...
                 fRes);
-        times = times(1)+tfRes.times; %refigure times
-    case 'mtft'
-        tfRes = nf_mtft(data,Fs,...
-                window,...
-                overlap,...
-                fRes,...
-                nTapers);
         times = times(1)+tfRes.times; %refigure times
     case 'filterhilbert'
         tfRes = nf_filterhilbert(data,Fs,...
