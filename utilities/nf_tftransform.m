@@ -113,8 +113,7 @@ expectedMethods = {'stft' ... %spectrogram
 
 %DEFAULTS                   
 %all methods
-defaultMethod = 'wavelet';
-% defaultPlot = 0;
+defaultMethod = 'dcwt';
 defaultFreqs = []; %1:1:floor(EEG.srate/4);
 defaultTimes = [EEG.xmin EEG.xmax];
 %pass on defaults
@@ -134,7 +133,6 @@ defaultMakePos = [];%0;
 addRequired(p,'EEG'); %EEGLAB set
 %all methods
 addParameter(p,'method',defaultMethod,@(x) any(validatestring(x,expectedMethods))); %basically required
-% addParameter(p,'plt',defaultPlot); %Any method
 addParameter(p,'freqs',defaultFreqs,validMonotonicVector); %freq vector
 addParameter(p,'times',defaultTimes,validNumVector); %time vector
 %only some methods
@@ -155,7 +153,6 @@ parse(p,EEG,varargin{:});
 
 %get all inputs for ease
 method=p.Results.method;
-% plt=p.Results.plt;
 freqs=p.Results.freqs;
 window=p.Results.window;
 overlap=p.Results.overlap;
@@ -200,7 +197,7 @@ switch method
                 freqs,...
                 lowpassF,...
                 order);
-    case 'dcwt'
+    case {'dcwt','wavelet'}
         tfRes = nf_dcwt(data,Fs,...
                 freqs,...
                 cycles);
@@ -264,9 +261,5 @@ if isfield(EEG.etc,'behavior')
     tfRes.behavior=EEG.etc.behavior; %if behavioral structure exists
 end
 
-% plot results
-% if plt==1
-%     nf_tfplot(tfRes);
-% end
 
 end
