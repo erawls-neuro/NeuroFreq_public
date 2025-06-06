@@ -40,7 +40,7 @@ function [tfRes,p] = nf_tftransform(EEG,varargin)
 %
 % METHOD-SPECIFIC
 %
-%   dcwt: 'cycles': Must be either a vector of length freqs, OR 
+%   wavelet: 'cycles': Must be either a vector of length freqs, OR 
 %                       a max-min pair i.e. [3 8], OR a single number i.e. 
 %                       4. If a max-min pair is provided a linear space 
 %                       over the range will be used. 
@@ -89,8 +89,7 @@ function [tfRes,p] = nf_tftransform(EEG,varargin)
 % Change Log:
 % ===========
 % 5/23/24: ER removed option "plot"
-
-
+% 12/7/25: ER added MTFT option
 
 % parse input
 p = inputParser;
@@ -101,6 +100,7 @@ validScalar = @(x) length(x)==1;
 
 %set legal methods
 expectedMethods = {'stft' ... %spectrogram
+                   'mtft' ... %multi-taper Fourier transform
                    'filterhilbert' ... %filter and Hilbert transform
                    'demodulation'... %complex demodulation
                    'dcwt'... %Custom wavelet transform
@@ -113,7 +113,7 @@ expectedMethods = {'stft' ... %spectrogram
 
 %DEFAULTS                   
 %all methods
-defaultMethod = 'dcwt';
+defaultMethod = 'wavelet';
 % defaultPlot = 0;
 defaultFreqs = []; %1:1:floor(EEG.srate/4);
 defaultTimes = [EEG.xmin EEG.xmax];
@@ -183,6 +183,13 @@ switch method
                 overlap,...
                 fRes);
         times = times(1)+tfRes.times; %refigure times
+    case 'mtft'
+        tfRes = nf_mtft(data,Fs,...
+                window,...
+                overlap,...
+                fRes,...
+                nTapers);
+        times = times(1)+tfRes.times; %refigure times
     case 'filterhilbert'
         tfRes = nf_filterhilbert(data,Fs,...
                 freqs,...
@@ -193,12 +200,12 @@ switch method
                 freqs,...
                 lowpassF,...
                 order);
-    case {'dcwt','wavelet'}
+    case 'dcwt'
         tfRes = nf_dcwt(data,Fs,...
                 freqs,...
                 cycles);
     case 'cwt'
-        tfRes = nf_cwt(data,Fs);
+            tfRes = nf_cwt(data,Fs);
     case 'stransform'
         tfRes = nf_stransform(data,Fs);            
     %quadratic tfds
@@ -257,5 +264,9 @@ if isfield(EEG.etc,'behavior')
     tfRes.behavior=EEG.etc.behavior; %if behavioral structure exists
 end
 
+% plot results
+% if plt==1
+%     nf_tfplot(tfRes);
+% end
 
 end
