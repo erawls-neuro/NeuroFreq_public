@@ -116,7 +116,6 @@ defaultMethod = 'dcwt';
 defaultFreqs = []; %1:1:floor(EEG.srate/4);
 defaultTimes = [EEG.xmin EEG.xmax];
 %pass on defaults
-defaultnTaper = [];%5
 defaultCycles = [];%3;
 defaultBandWidth = [];%1;
 defaultOrder = [];%3;
@@ -145,7 +144,6 @@ addParameter(p,'fRes',defaultfRes,validScalar); %binomial2,bornjordan2,ridrihacz
 addParameter(p,'maxLags',defaultMaxLag); %binomial2,bornjordan2
 addParameter(p,'cwkernel',defaultCWKernel); %ridRihaczek
 addParameter(p,'makePos',defaultMakePos,validScalar); %binomial2,bornjordan2,ridrihaczek
-addParameter(p,'nTapers',defaultnTaper,validScalar); %binomial2,bornjordan2,ridrihaczek
 
 %parse
 parse(p,EEG,varargin{:});
@@ -167,7 +165,6 @@ reqT=p.Results.times;
 Fs=EEG.srate;
 data=EEG.data;
 times = EEG.times/1000;
-nTapers=p.Results.nTapers;
 
 % OPTIONS
 method = lower(method);
